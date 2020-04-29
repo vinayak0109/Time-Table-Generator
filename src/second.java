@@ -242,6 +242,26 @@ public class second extends javax.swing.JFrame {
         //ArrayList<String> list1 = new ArrayList<String>(
         //Arrays.asList("00","01","02","10","11","12","20","22","30","32","40","42","51","61"));
 
+        //provide the dropdown list for the selection of teacher
+        //and for the selected teacher with particular subject it inserted in the list of teacher array as described below
+        //int teacher_list=new int[7];
+        //initialize them with the selected teacher from the drop down list in the design section
+        
+        //will create the list of teacher having their ID's
+        //will create a 2d array of size [6][7] initialized with zero for all the teacher's ID
+        //and if the particular lecture is assigned to some teacher with ID 2 for let say monday 3 theory lecture, so 
+        //we will go to table with ID 2 and check for the [0][2] 0 is for monday and 2 is for third lecture
+        //and if it is 1 then we have to select some other subject for that slot 
+        //and if it is 0 we are good to go and assign that lecture to the selected teacher and update the chart of teacher
+        //with ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed
+        
+        //once the time table is successfully generated it get stored in the database in the form of table with name SemsterBranchSection 1CSEB 
+        //1 semester form cse branch and for the b section 
+        //one new frame for the display of time table
+        //which will have the dropdown for semester branch and section with a button of show 
+        //as soon as user selects the options and click the show button the time table will get displayed to the user
+        //and if it is not present then the message will appear as the time table is not generated yet for the given input.
+        
         for(int i=0; i<6; i++)
         {
               ArrayList<String> list = new ArrayList<String>();
