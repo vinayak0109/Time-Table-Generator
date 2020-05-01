@@ -38,7 +38,7 @@ public class SavedTimeTable extends javax.swing.JFrame {
 
         semesterSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8" }));
 
-        branchSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CSE", "Mech.", "IT", "Civil", "EC" }));
+        branchSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CS", "ME", "IT", "CIVIL", "EX", "EE" }));
         branchSelector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 branchSelectorActionPerformed(evt);

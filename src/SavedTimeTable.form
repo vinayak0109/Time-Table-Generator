@@ -96,12 +96,13 @@
     <Component class="javax.swing.JComboBox" name="branchSelector">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
-            <StringItem index="0" value="CSE"/>
-            <StringItem index="1" value="Mech."/>
+          <StringArray count="6">
+            <StringItem index="0" value="CS"/>
+            <StringItem index="1" value="ME"/>
             <StringItem index="2" value="IT"/>
-            <StringItem index="3" value="Civil"/>
-            <StringItem index="4" value="EC"/>
+            <StringItem index="3" value="CIVIL"/>
+            <StringItem index="4" value="EX"/>
+            <StringItem index="5" value="EE"/>
           </StringArray>
         </Property>
       </Properties>

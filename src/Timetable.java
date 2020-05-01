@@ -54,18 +54,18 @@ public class Timetable extends javax.swing.JFrame {
         JTable.setValueAt("H",4,5);
         JTable.setValueAt("BREAK",5,5);
         
-        NewJFrame t=new NewJFrame();
+        SubjectSelection t=new SubjectSelection();
         for(int i=0; i<6; i++)
         {
             for(int j=0; j<4; j++)
             {
                 //FOR CHANGE
-                    if(second.TT[i][j]==(second.change*10+2)){
+                    if(TeacherSelection.TT[i][j]==(TeacherSelection.change*10+2)){
                         JTable.setValueAt("Mentor/Library", i, j+1);
                         continue;
                     }
                 //FOR CHANGE
-                switch(second.TT[i][j])
+                switch(TeacherSelection.TT[i][j])
                 {
                     case 0: JTable.setValueAt(t.sub[0], i, j+1); break;
                     case 10: JTable.setValueAt(t.sub[1], i, j+1); break;
@@ -98,12 +98,12 @@ public class Timetable extends javax.swing.JFrame {
             for(int j=4; j<7; j++)
             {
                 //FOR CHANGE
-                    if(second.TT[i][j]==(second.change*10+2)){
-                        JTable.setValueAt("Mentor/Library", i, j+1);
+                    if(TeacherSelection.TT[i][j]==(TeacherSelection.change*10+2)){
+                        JTable.setValueAt("Mentor/Library", i, j+2);
                         continue;
                     }
                 //FOR CHANGE
-                switch(second.TT[i][j])
+                switch(TeacherSelection.TT[i][j])
                 {
                     case 0: JTable.setValueAt(t.sub[0], i, j+2); break;
                     case 10: JTable.setValueAt(t.sub[1], i, j+2); break;

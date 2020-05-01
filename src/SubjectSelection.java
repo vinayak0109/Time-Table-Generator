@@ -11,12 +11,12 @@ import java.util.ArrayList;
  *
  * @author hp
  */
-public class NewJFrame extends javax.swing.JFrame {
+public class SubjectSelection extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
      */
-    public NewJFrame() {
+    public SubjectSelection() {
         initComponents();
     }
 
@@ -483,7 +483,7 @@ public class NewJFrame extends javax.swing.JFrame {
         //static String[] sub= new String[7];
         //static ArrayList<String> list1 = new ArrayList<String>();
         
-        second s1=new second();
+        TeacherSelection s1=new TeacherSelection();
         s1.setVisible(true);
         s1.ss1.setText(sss1.getText());
         s1.ss2.setText(sss2.getText());
@@ -633,20 +633,21 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SubjectSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SubjectSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SubjectSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SubjectSelection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NewJFrame().setVisible(true);
+                new SubjectSelection().setVisible(true);
             }
         });
     }
