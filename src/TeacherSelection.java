@@ -370,6 +370,12 @@ public class TeacherSelection extends javax.swing.JFrame {
         //change the column name of the existing table as 1s 2s 3s etc.
         //add one column to all the table with name row with auto increment feature
         //when the save button is clicked the generated time table get stored in the database
+        //After generating the timetable we will create the two dimensional array which will contain the information of the time table
+        //to get stored in the database in the exact form
+        //and for that we will first set the values for each cell in the time table and after the completion of this task
+        //we will get the value of each cell with the help of JTable.getValueAt(row, col) and store that in the array
+        //and that array is going to store exactly in the database
+        
         ////when the save button is clicked in TimeTable frame all the selected teachers will be putted in the set and the count for the classes in the database get decreased by 1
         ////when the save button is clicked update the chart of teacher with 1, for let say ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed
         

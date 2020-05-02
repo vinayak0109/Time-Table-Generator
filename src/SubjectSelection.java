@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author hp
@@ -480,10 +474,6 @@ public class SubjectSelection extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       
-        //static int[][] subject = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
-        //static String[] sub= new String[7];
-        //static ArrayList<String> list1 = new ArrayList<String>();
         
         TeacherSelection s1;
         try {
@@ -508,83 +498,74 @@ public class SubjectSelection extends javax.swing.JFrame {
         sub[5]=sss6.getText();
         sub[6]=sss7.getText();
        
-    if(this.t1.isSelected()) {
-        subject[0][0]=1;
-        list1.add("00");// do the thing associated with checkbox1
-    }
-    if(this.t2.isSelected()) {
-        subject[1][0]=1;
-        list1.add("10");// do the thing associated with checkbox2
-    }
-    if(this.t3.isSelected()) {
-        subject[2][0]=1;
-        list1.add("20");// do the thing associated with checkbox1
-    }
-    if(this.t4.isSelected()) {
-        subject[3][0]=1;
-        list1.add("30");// do the thing associated with checkbox2
-    }
-    if(this.t5.isSelected()) {
-        subject[4][0]=1;
-        list1.add("40");// do the thing associated with checkbox1
-    }
-    if(this.p1.isSelected()) {
-        subject[0][1]=1;
-        list1.add("01");// do the thing associated with checkbox2
-    }
-    if(this.p2.isSelected()) {
-        subject[1][1]=1;
-        list1.add("11");// do the thing associated with checkbox2
-    }
-    if(this.p3.isSelected()) {
-        subject[2][1]=1;
-        list1.add("21");// do the thing associated with checkbox2
-    }
-    if(this.p4.isSelected()) {
-        subject[3][1]=1;
-        list1.add("31");// do the thing associated with checkbox2
-    }
-    if(this.p5.isSelected()) {
-        subject[4][1]=1;
-        list1.add("41");// do the thing associated with checkbox2
-    }
-    if(this.p6.isSelected()) {
-        subject[5][1]=1;
-        list1.add("51");// do the thing associated with checkbox2
-    }
-    if(this.p7.isSelected()) {
-        subject[6][1]=1;
-        list1.add("61");// do the thing associated with checkbox2
-    }
-    if(this.tt1.isSelected()) {
-        subject[0][2]=1;
-        list1.add("02");// do the thing associated with checkbox2
-    }
-    if(this.tt2.isSelected()) {
-        subject[1][2]=1;
-        list1.add("12");// do the thing associated with checkbox2
-    }
-    if(this.tt3.isSelected()) {
-        subject[2][2]=1;
-        list1.add("22");// do the thing associated with checkbox2
-    }
-    if(this.tt4.isSelected()) {
-        subject[3][2]=1;
-        list1.add("32");// do the thing associated with checkbox2
-    }
-    if(this.tt5.isSelected()) {
-        subject[4][2]=1;
-        list1.add("42");// do the thing associated with checkbox2
-    }
-//    if(this.tt6.isSelected()) {
-//        subject[5][2]=1;
-//        list1.add("52");// do the thing associated with checkbox2
-//    }
-//    if(this.tt7.isSelected()) {
-//        subject[6][2]=1;
-//        list1.add("62");// do the thing associated with checkbox2
-//    }
-                
+        if(this.t1.isSelected()) {
+            subject[0][0]=1;
+            list1.add("00");// do the thing associated with checkbox1
+        }
+        if(this.t2.isSelected()) {
+            subject[1][0]=1;
+            list1.add("10");// do the thing associated with checkbox2
+        }
+        if(this.t3.isSelected()) {
+            subject[2][0]=1;
+            list1.add("20");// do the thing associated with checkbox1
+        }
+        if(this.t4.isSelected()) {
+            subject[3][0]=1;
+            list1.add("30");// do the thing associated with checkbox2
+        }
+        if(this.t5.isSelected()) {
+            subject[4][0]=1;
+            list1.add("40");// do the thing associated with checkbox1
+        }
+        if(this.p1.isSelected()) {
+            subject[0][1]=1;
+            list1.add("01");// do the thing associated with checkbox2
+        }
+        if(this.p2.isSelected()) {
+            subject[1][1]=1;
+            list1.add("11");// do the thing associated with checkbox2
+        }
+        if(this.p3.isSelected()) {
+            subject[2][1]=1;
+            list1.add("21");// do the thing associated with checkbox2
+        }
+        if(this.p4.isSelected()) {
+            subject[3][1]=1;
+            list1.add("31");// do the thing associated with checkbox2
+        }
+        if(this.p5.isSelected()) {
+            subject[4][1]=1;
+            list1.add("41");// do the thing associated with checkbox2
+        }
+        if(this.p6.isSelected()) {
+            subject[5][1]=1;
+            list1.add("51");// do the thing associated with checkbox2
+        }
+        if(this.p7.isSelected()) {
+            subject[6][1]=1;
+            list1.add("61");// do the thing associated with checkbox2
+        }
+        if(this.tt1.isSelected()) {
+            subject[0][2]=1;
+            list1.add("02");// do the thing associated with checkbox2
+        }
+        if(this.tt2.isSelected()) {
+            subject[1][2]=1;
+            list1.add("12");// do the thing associated with checkbox2
+        }
+        if(this.tt3.isSelected()) {
+            subject[2][2]=1;
+            list1.add("22");// do the thing associated with checkbox2
+        }
+        if(this.tt4.isSelected()) {
+            subject[3][2]=1;
+            list1.add("32");// do the thing associated with checkbox2
+        }
+        if(this.tt5.isSelected()) {
+            subject[4][2]=1;
+            list1.add("42");// do the thing associated with checkbox2
+        }       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void p1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p1ActionPerformed

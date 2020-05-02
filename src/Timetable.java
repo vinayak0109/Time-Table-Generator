@@ -15,16 +15,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author vinayak
  */
+
 public class Timetable extends javax.swing.JFrame {
     Connection conn;
     Statement statements;
@@ -62,11 +57,8 @@ public class Timetable extends javax.swing.JFrame {
         JLabel headerLabel = (JLabel) rendererFromHeader;
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
         
-        //JTable.getColumnModel().getColumn(2).setHeaderValue("<html><center><p>column 1<br>design</p></center></html>");
-        
         JTable.setShowGrid(true);
         JTable.setShowVerticalLines(true);
-        //JTable.getColumnModel().getColumn(0).setPreferredWidth(60);
         JTable.setValueAt("Monday",0,0);
         JTable.setValueAt("Tuesday",1,0);
         JTable.setValueAt("Wednesday",2,0);
@@ -81,7 +73,6 @@ public class Timetable extends javax.swing.JFrame {
         JTable.setValueAt("BREAK",5,5);
         
         SubjectSelection t=new SubjectSelection();
-//        TeacherSelection teachers=new TeacherSelection();
         for(int i=0; i<6; i++)
         {
             for(int j=0; j<4; j++)
@@ -114,8 +105,6 @@ public class Timetable extends javax.swing.JFrame {
                     case 32: JTable.setValueAt(t.sub[3]+"(TT)/"+t.sub[2]+"(TT)", i, j+1); break;
                     case 42: JTable.setValueAt(t.sub[4]+"(TT)/"+t.sub[5]+"(TT)", i, j+1); break;
                     case 52: JTable.setValueAt(t.sub[5]+"(TT)/"+t.sub[4]+"(TT)", i, j+1); break;
-//                    case 62: JTable.setValueAt("Mentor/Library", i, j+1); break;
-//                    //case 42: JTable.setValueAt("Mentor/Library", i, j+1); break;
                 }
             }
             System.out.println();
@@ -152,7 +141,6 @@ public class Timetable extends javax.swing.JFrame {
                     case 32: JTable.setValueAt(t.sub[3]+"(TT)/"+t.sub[2]+"(TT)", i, j+2); break;
                     case 42: JTable.setValueAt(t.sub[4]+"(TT)/"+t.sub[5]+"(TT)", i, j+2); break;
                     case 52: JTable.setValueAt(t.sub[5]+"(TT)/"+t.sub[4]+"(TT)", i, j+2); break;
-//                    case 62: JTable.setValueAt("Mentor/Library", i, j+2); break;
                 }
             }
             System.out.println();
