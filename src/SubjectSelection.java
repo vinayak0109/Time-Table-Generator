@@ -1,5 +1,8 @@
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,14 +15,13 @@ import java.util.ArrayList;
  * @author hp
  */
 public class SubjectSelection extends javax.swing.JFrame {
-
     /**
      * Creates new form NewJFrame
      */
     public SubjectSelection() {
         initComponents();
     }
-
+    
     static int[][] subject = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
     static String[] sub= new String[7];
     static ArrayList<String> list1 = new ArrayList<String>();
@@ -483,15 +485,20 @@ public class SubjectSelection extends javax.swing.JFrame {
         //static String[] sub= new String[7];
         //static ArrayList<String> list1 = new ArrayList<String>();
         
-        TeacherSelection s1=new TeacherSelection();
-        s1.setVisible(true);
-        s1.ss1.setText(sss1.getText());
-        s1.ss2.setText(sss2.getText());
-        s1.ss5.setText(sss5.getText());
-        s1.ss3.setText(sss3.getText());
-        s1.ss4.setText(sss4.getText());
-        s1.ss6.setText(sss6.getText());
-        s1.ss7.setText(sss7.getText());
+        TeacherSelection s1;
+        try {
+            s1 = new TeacherSelection();
+            s1.setVisible(true);
+            s1.ss1.setText(sss1.getText());
+            s1.ss2.setText(sss2.getText());
+            s1.ss5.setText(sss5.getText());
+            s1.ss3.setText(sss3.getText());
+            s1.ss4.setText(sss4.getText());
+            s1.ss6.setText(sss6.getText());
+            s1.ss7.setText(sss7.getText());
+        } catch (SQLException ex) {
+            Logger.getLogger(SubjectSelection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         sub[0]=sss1.getText();
         sub[1]=sss2.getText();

@@ -55,6 +55,7 @@ public class Timetable extends javax.swing.JFrame {
         JTable.setValueAt("BREAK",5,5);
         
         SubjectSelection t=new SubjectSelection();
+//        TeacherSelection teachers=new TeacherSelection();
         for(int i=0; i<6; i++)
         {
             for(int j=0; j<4; j++)
