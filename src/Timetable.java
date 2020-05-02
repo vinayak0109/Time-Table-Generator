@@ -1,4 +1,13 @@
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -17,12 +26,29 @@ import javax.swing.table.TableModel;
  * @author vinayak
  */
 public class Timetable extends javax.swing.JFrame {
-    
+    Connection conn;
+    Statement statements;
+    ResultSet rs;
+    String url="jdbc:mysql://localhost/";
+    String dbName="teachers";   
+    String driver="com.mysql.jdbc.Driver";
+    String userName="root";
+    String password="";
     /**
      * Creates new form Timetable
      */
     public Timetable() {
         initComponents();
+        
+        try{
+            Class.forName(driver);
+            conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/teachers?zeroDateTimeBehavior=convertToNull", userName, password);
+            statements=conn.createStatement();
+            System.out.println("Connection Established");
+        }
+        catch(ClassNotFoundException | SQLException sqle){
+            System.out.println("Connection Failed");
+        }
         
         DefaultTableCellRenderer c = new DefaultTableCellRenderer();
             c.setHorizontalAlignment(SwingConstants.CENTER);
@@ -144,6 +170,7 @@ public class Timetable extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         JTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -168,25 +195,71 @@ public class Timetable extends javax.swing.JFrame {
         JTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(JTable);
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(551, 551, 551)
+                        .addComponent(jButton1)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //For updating the classes count in the database WORKING FINE
+//        Set<Integer> hashSet = new HashSet<Integer>(); 
+//        for(int i=0; i<7; i++){
+//            hashSet.add(TeacherSelection.teacherList[i]);
+//        }
+//        for(Integer id: hashSet){
+//            String query="UPDATE `faculties` SET `classes`=`classes`- 1 WHERE `teacher_id`="+id;
+//            try {
+//                statements.executeUpdate(query);
+//            } catch (SQLException ex) {
+//                Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+
+        //For updating the slot assigned to each teacher with 1
+//        for(int i=0; i<6; i++){
+//            for(int j=0; j<7; j++){
+//                int id=TeacherSelection.timeTableID[i][j];
+//                int col=j+1;
+//                int row=i+1;
+//                String query="UPDATE `"+id+"` SET `"+col+"s`=1 WHERE `row`="+row;
+//                try {
+//                    statements.executeUpdate(query);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,6 +298,7 @@ public class Timetable extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JTable;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

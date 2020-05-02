@@ -528,14 +528,6 @@ public class SubjectSelection extends javax.swing.JFrame {
         subject[4][0]=1;
         list1.add("40");// do the thing associated with checkbox1
     }
-//    if(this.t6.isSelected()) {
-//        subject[5][0]=1;
-//        list1.add("50");// do the thing associated with checkbox2
-//    }
-//    if(this.t7.isSelected()) {
-//        subject[6][0]=1;
-//        list1.add("60");// do the thing associated with checkbox1
-//    }
     if(this.p1.isSelected()) {
         subject[0][1]=1;
         list1.add("01");// do the thing associated with checkbox2

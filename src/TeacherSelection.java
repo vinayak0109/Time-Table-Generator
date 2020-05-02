@@ -21,6 +21,7 @@ public class TeacherSelection extends javax.swing.JFrame {
     String password="";
     static int teacherList[] = new int[7];
     static ArrayList<String> teacherName = new ArrayList<String>();
+    static int timeTableID[][] = new int[6][7];
     /**
      * Creates new form second
      * @throws java.sql.SQLException
@@ -49,6 +50,22 @@ public class TeacherSelection extends javax.swing.JFrame {
             jComboBox8.addItem(fName + " " + lName);
             jComboBox9.addItem(fName + " " + lName);
         }
+        
+        //For testing
+//                int col=j+1;
+//                String query="select "+col+"s from `"+id+"`";
+//                try {
+//                    rs = statements.executeQuery(query);
+//                    int row=i+1;
+//                    while(rs.next() && row!=0){
+//                        checkedValue=rs.getInt(1);
+//                        row--;
+//                    }
+//                    System.out.println("Checked Value"+checkedValue);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
+//                }    
+        //For testing
     }
     
     static int[][] TT = new int[6][7];
@@ -284,9 +301,9 @@ public class TeacherSelection extends javax.swing.JFrame {
                 int id=rs.getInt("teacher_id");
                 teacherList[6]=id;
             }
-            for(int i=0; i<7; i++){
-                System.out.println(teacherList[i]);
-            }
+//            for(int i=0; i<7; i++){
+//                System.out.println(teacherName.get(i));
+//            }
         } catch (SQLException ex) {
             Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -330,41 +347,44 @@ public class TeacherSelection extends javax.swing.JFrame {
         System.out.print(SubjectSelection.list1.toString());
 
         ////provide the dropdown list for the selection of teacher        DONE
-        //when the save button is clicked in TimeTable frame all the selected teachers will be putted in the set and the count for the classes
-        //in the database get decreased by 1
         ////and for the selected teacher with particular subject, it is inserted in the list of teacher array as described below
         ////int teacher_list=new int[7];
         ////initialize them with the selected teacher id from the drop down list in the design section
         
         ////will create the list of teacher having their ID's
-        //will create a 2d array of size [6][7] initialized with zero for all the teacher's ID
-        //and if the particular lecture is assigned to some teacher with ID 2 for let say monday 3 theory lecture, so 
-        //we will go to table with ID 2 and check for the [0][2] 0 is for monday and 2 is for third lecture
-        //and if it is 1 then we have to select some other subject for that slot 
-        //and if it is 0 we are good to go and assign that lecture to the selected teacher and update the chart of teacher
-        //with ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed
+        ////will create a 2d array of size [6][7] initialized with zero for all the teacher's ID
+        ////and if the particular lecture is assigned to some teacher with ID 2 for let say monday 3 theory lecture, so 
+        ////we will go to table with ID 2 and check for the [0][2] 0 is for monday and 2 is for third lecture
+        ////and if it is 1 then we have to select some other subject for that slot 
+        ////and if it is 0 we are good to go and assign that lecture to the selected teacher and 
         
-        //once the time table is successfully generated it get stored in the database in the form of table with name SemsterBranchSection 1CSEB 
-        //1 semester form cse branch and for the b section 
+        //once the time table is successfully generated it get stored in the database in the form of table with name SemsterBranchSection 1CSB 
+        //when the save button is clicked 1 semester form cse branch and for the b section 
         //one new frame for the display of time table
         //which will have the dropdown for semester branch and section with a button of show 
         //as soon as user selects the options and click the show button the time table will get displayed to the user
         //and if it is not present then the message will appear as the time table is not generated yet for the given input.
         
         //add the teacher name in the time table with the help of teacherName array
+        //create tables for all the teachers with their ID number
+        //change the column name of the existing table as 1s 2s 3s etc.
+        //add one column to all the table with name row with auto increment feature
+        //when the save button is clicked the generated time table get stored in the database
+        ////when the save button is clicked in TimeTable frame all the selected teachers will be putted in the set and the count for the classes in the database get decreased by 1
+        ////when the save button is clicked update the chart of teacher with 1, for let say ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed
         
         for(int i=0; i<6; i++)
         {
               ArrayList<String> list = new ArrayList<String>();
-              int counter=0;
+              int counter=0;                                    //No two lab should come in the same day
               for(int j=0; j<7; j++)
               {
                       int x,y,flag=1;
                       String r="";
+                      int checkedValue=1;
                       do
                       {
                           flag=1;
-                          //x=random.nextInt(7);
 
                           if(counter==0 && (j!=1 && j!=3 && j!=4 && j!=6))
                           {                                       //Anthing can come here as there is no boundation that the practical could not appear here.
@@ -408,12 +428,33 @@ public class TeacherSelection extends javax.swing.JFrame {
                       x=Integer.parseInt(String.valueOf(r.charAt(0)));
                       y=Integer.parseInt(String.valueOf(r.charAt(1)));
 
-                      }while(periods[x][y]<=0 || flag==0);         //if there is no period available for the randoml selected subject then the do the whole thing again
+                      //For checking if the selected slot for the teacher is availble or not by storing the value in the checkedValue variable
+                      //For change
+                      int id=teacherList[x];
+//                      System.out.println("ID"+id);
+                      timeTableID[i][j]=id;
+                      int col=j+1;
+                      int row=i+1;
+                      String query="select "+col+"s from `"+id+"` where `row`="+row;
+                          try {
+                              rs = statements.executeQuery(query);
+                              while(rs.next()){
+                                  checkedValue=rs.getInt(1);
+                              }
+                              System.out.println("Checked Value"+checkedValue);
+                              
+                          } catch (SQLException ex) {
+                              Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
+                          }
+                        //For change
+                      
+                      }while(periods[x][y]<=0 || flag==0 || checkedValue==1);         //if there is no period available for the randoml selected subject then the do the whole thing again
 
 
                       if(y==1)
                       {
                               TT[i][j]=TT[i][j+1]=Integer.parseInt(r);   
+                              timeTableID[i][j+1]=teacherList[x];
                               j+=1;
                               periods[x][y]-=2;
                               counter=1;
@@ -446,10 +487,17 @@ public class TeacherSelection extends javax.swing.JFrame {
               System.out.println("");
               System.out.println("");
         }
+        
         //just for checking
+        System.out.println("Teachers ID");
+        for(int i=0; i<7; i++){
+            System.out.print(teacherList[i]+" ");
+        }
+        System.out.println();
+        System.out.println("TIME TABLE");
         for(int i=0; i<6; i++){
             for(int j=0; j<7; j++){
-                System.out.print(TT[i][j]+" ");
+                System.out.print(timeTableID[i][j]+" ");
             }
             System.out.println("");
         }
