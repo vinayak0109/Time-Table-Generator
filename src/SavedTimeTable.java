@@ -1,3 +1,14 @@
+
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,11 +21,33 @@
  */
 public class SavedTimeTable extends javax.swing.JFrame {
 
+    Connection conn;
+    Statement statements;
+    ResultSet rs;
+    String url="jdbc:mysql://localhost/";
+    String dbName="teachers";   
+    String driver="com.mysql.jdbc.Driver";
+    String userName="root";
+    String password="";
+    static int semester;
+    static String branch;
+    static String section;
+    static String[][] producedTimeTable = new String[6][7];
     /**
      * Creates new form SavedTimeTable
      */
     public SavedTimeTable() {
         initComponents();
+        
+        try{
+            Class.forName(driver);
+            conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/teachers?zeroDateTimeBehavior=convertToNull", userName, password);
+            statements=conn.createStatement();
+            System.out.println("Connection Established");
+        }
+        catch(ClassNotFoundException | SQLException sqle){
+            System.out.println("Connection Failed");
+        }
     }
 
     /**
@@ -29,7 +62,7 @@ public class SavedTimeTable extends javax.swing.JFrame {
         semesterSelector = new javax.swing.JComboBox<>();
         branchSelector = new javax.swing.JComboBox<>();
         sectionSelector = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        show = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -61,10 +94,10 @@ public class SavedTimeTable extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Show");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        show.setText("Show");
+        show.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                showActionPerformed(evt);
             }
         });
 
@@ -152,7 +185,7 @@ public class SavedTimeTable extends javax.swing.JFrame {
                 .addGap(111, 111, 111)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(branchSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(show))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -169,11 +202,12 @@ public class SavedTimeTable extends javax.swing.JFrame {
                     .addComponent(branchSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sectionSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
-                .addComponent(jButton1)
+                .addComponent(show)
                 .addContainerGap(56, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void sectionSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectionSelectorActionPerformed
@@ -184,9 +218,43 @@ public class SavedTimeTable extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_branchSelectorActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void showActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showActionPerformed
+        semester=Integer.parseInt(semesterSelector.getSelectedItem().toString());
+        branch=branchSelector.getSelectedItem().toString();
+        section=sectionSelector.getSelectedItem().toString();
+        DatabaseMetaData dbm;
+        String tableName="";
+        tableName=tableName + semester + branch + section;
+        try {
+            dbm = conn.getMetaData();
+            // check if "employee" table is there
+            ResultSet tables = dbm.getTables(null, null, tableName, null);
+            if (tables.next()) {
+                System.out.println("Exists");       // Table exists
+                String query="SELECT * FROM `" + tableName + "`";
+                rs=statements.executeQuery(query);
+                int row=0;
+                while(rs.next()){
+                    for(int col=0; col<7; col++){
+                        producedTimeTable[row][col]=rs.getString(col+2);
+                    }
+                    row++;
+                }
+//                for(int i=0; i<6; i++){
+//                    for(int j=0; j<7; j++){
+//                        System.out.print(producedTimeTable[i][j]+"   ");
+//                    }
+//                    System.out.println();
+//                }
+                new SavedTimeTableDisplayer().setVisible(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Time-Table doesn't exists.", "Error", JOptionPane.ERROR_MESSAGE);       // Table does not exist
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SavedTimeTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_showActionPerformed
 
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
         // TODO add your handling code here:
@@ -247,7 +315,6 @@ public class SavedTimeTable extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> branchSelector;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -261,5 +328,6 @@ public class SavedTimeTable extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JComboBox<String> sectionSelector;
     private javax.swing.JComboBox<String> semesterSelector;
+    private javax.swing.JButton show;
     // End of variables declaration//GEN-END:variables
 }

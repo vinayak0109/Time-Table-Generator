@@ -234,6 +234,7 @@ public class TeacherSelection extends javax.swing.JFrame {
         ss6.getAccessibleContext().setAccessibleName("");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -391,23 +392,23 @@ public class TeacherSelection extends javax.swing.JFrame {
         ////and if it is 1 then we have to select some other subject for that slot 
         ////and if it is 0 we are good to go and assign that lecture to the selected teacher and 
         
-        //once the time table is successfully generated it get stored in the database in the form of table with name SemsterBranchSection 1CSB 
-        //when the save button is clicked 1 semester form cse branch and for the b section 
+        ////once the time table is successfully generated it get stored in the database in the form of table with name SemsterBranchSection 1CSB 
+        ////when the save button is clicked 1 semester form cse branch and for the b section 
         ////one new frame for the display of time table
         ////which will have the dropdown for semester branch and section with a button of show 
         ////as soon as user selects the options and click the show button the time table will get displayed to the user
         ////and if it is not present then the message will appear as the time table is not generated yet for the given input.
         
-        //add the teacher name in the time table with the help of teacherName array
+        ////add the teacher name in the time table with the help of teacherName array
         //create tables for all the teachers with their ID number
         //change the column name of the existing table as 1s 2s 3s etc.
         //add one column to all the table with name row with auto increment feature
-        //when the save button is clicked the generated time table get stored in the database
-        //After generating the timetable we will create the two dimensional array which will contain the information of the time table
-        //to get stored in the database in the exact form
-        //and for that we will first set the values for each cell in the time table and after the completion of this task
-        //we will get the value of each cell with the help of JTable.getValueAt(row, col) and store that in the array
-        //and that array is going to store exactly in the database
+        ////when the save button is clicked the generated time table get stored in the database
+        ////After generating the timetable we will create the two dimensional array which will contain the information of the time table
+        ////to get stored in the database in the exact form
+        ////and for that we will first set the values for each cell in the time table and after the completion of this task
+        ////we will get the value of each cell with the help of JTable.getValueAt(row, col) and store that in the array
+        ////and that array is going to store exactly in the database
         
         ////when the save button is clicked in TimeTable frame all the selected teachers will be putted in the set and the count for the classes in the database get decreased by 1
         ////when the save button is clicked update the chart of teacher with 1, for let say ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -29,6 +30,7 @@ public class Timetable extends javax.swing.JFrame {
     String driver="com.mysql.jdbc.Driver";
     String userName="root";
     String password="";
+    static String[][] generatedTimeTable = new String[6][7];
     /**
      * Creates new form Timetable
      */
@@ -145,6 +147,27 @@ public class Timetable extends javax.swing.JFrame {
             }
             System.out.println();
         }
+        for(int i=0; i<6; i++){
+            for(int j=0; j<4; j++){
+                int row=i;
+                int col=j+1;
+                generatedTimeTable[i][j]=JTable.getValueAt(row, col).toString();
+            }
+        }
+        for(int i=0; i<6; i++){
+            for(int j=4; j<7; j++){
+                int row=i;
+                int col=j+2;
+                generatedTimeTable[i][j]=JTable.getValueAt(row, col).toString();
+            }
+        }
+        System.out.println("Generated time table:");
+        for(int i=0; i<6; i++){
+            for(int j=0; j<7; j++){
+                System.out.print(generatedTimeTable[i][j]+"  ");
+            }
+            System.out.println();
+        }
     }
     
     /**
@@ -216,37 +239,64 @@ public class Timetable extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //For updating the classes count in the database WORKING FINE
-//        Set<Integer> hashSet = new HashSet<Integer>(); 
-//        for(int i=0; i<7; i++){
-//            hashSet.add(TeacherSelection.teacherList[i]);
-//        }
-//        for(Integer id: hashSet){
-//            String query="UPDATE `faculties` SET `classes`=`classes`- 1 WHERE `teacher_id`="+id;
-//            try {
-//                statements.executeUpdate(query);
-//            } catch (SQLException ex) {
-//                Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
+        
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Save the time table?","Warning", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            
+            //For updating the classes count in the database WORKING FINE
+//            Set<Integer> hashSet = new HashSet<Integer>(); 
+//            for(int i=0; i<7; i++){
+//                hashSet.add(TeacherSelection.teacherList[i]);
 //            }
-//        }
-
-        //For updating the slot assigned to each teacher with 1
-//        for(int i=0; i<6; i++){
-//            for(int j=0; j<7; j++){
-//                int id=TeacherSelection.timeTableID[i][j];
-//                int col=j+1;
-//                int row=i+1;
-//                String query="UPDATE `"+id+"` SET `"+col+"s`=1 WHERE `row`="+row;
+//            for(Integer id: hashSet){
+//                String query="UPDATE `faculties` SET `classes`=`classes`- 1 WHERE `teacher_id`="+id;
 //                try {
 //                    statements.executeUpdate(query);
 //                } catch (SQLException ex) {
 //                    Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
 //                }
 //            }
-//        }
+
+            //For updating the slot assigned to each teacher with 1
+//            for(int i=0; i<6; i++){
+//                for(int j=0; j<7; j++){
+//                    int id=TeacherSelection.timeTableID[i][j];
+//                    int col=j+1;
+//                    int row=i+1;
+//                    String query="UPDATE `"+id+"` SET `"+col+"s`=1 WHERE `row`="+row;
+//                    try {
+//                        statements.executeUpdate(query);
+//                    } catch (SQLException ex) {
+//                        Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            }
+
+            //For saving the time table in the database
+            String query="CREATE TABLE IF NOT EXISTS `" + SubjectSelection.semester + SubjectSelection.branch + TeacherSelection.section + "`("+
+                    " `row` int(2), `1s` VARCHAR(40), `2s` VARCHAR(40), `3s` VARCHAR(40), `4s` VARCHAR(40), `5s` VARCHAR(40), `6s` VARCHAR(40), `7s` VARCHAR(40))";
+            try {
+                statements.executeUpdate(query);
+                for(int i=0; i<6; i++){
+                    int row=i+1;
+                    query="INSERT INTO `" + SubjectSelection.semester + SubjectSelection.branch + TeacherSelection.section + "` (`row`, `1s`, `2s`, `3s`, `4s`, `5s`, `6s`, `7s`) "
+                           + "VALUES ('" + row + "', '" + generatedTimeTable[i][0] + "', '" + generatedTimeTable[i][1] + "', '" + generatedTimeTable[i][2] 
+                           + "', '" + generatedTimeTable[i][3] + "', '" + generatedTimeTable[i][4] + "', '" + generatedTimeTable[i][5] 
+                           + "', '" + generatedTimeTable[i][6] + "')";
+                    statements.executeUpdate(query);
+                }                
+            } catch (SQLException ex) {
+                Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //For giving the message that the timetable is successfully stored in database
+            JOptionPane.showMessageDialog(null, "Successfully saved!");
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

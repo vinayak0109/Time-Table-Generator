@@ -164,18 +164,20 @@ public class LoginPage extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         String username=userName.getText();
         String password=new String(passwordField.getPassword());
         String query="SELECT `password` FROM `login` WHERE `username`='" + username + "'";
+        int flag=0;
         try {
             rs=statements.executeQuery(query);
             while(rs.next()){
+                flag=1;
                 String pwd=rs.getString(1);
                 if(pwd.equals(password)){
-                    JOptionPane.showMessageDialog(null, "Login successfull!");
                     this.setVisible(false);
                     SubjectSelection s=new SubjectSelection();
                     s.setVisible(true);
@@ -184,6 +186,11 @@ public class LoginPage extends javax.swing.JFrame {
                     userName.setText("");
                     passwordField.setText("");
                 }
+            }
+            if(flag==0){
+                    JOptionPane.showMessageDialog(null, "Invalid credentials", "Login error", JOptionPane.ERROR_MESSAGE);
+                    userName.setText("");
+                    passwordField.setText("");                
             }
         } catch (SQLException ex) {
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);

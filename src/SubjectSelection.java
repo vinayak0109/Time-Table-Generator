@@ -500,6 +500,7 @@ public class SubjectSelection extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void sss2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sss2ActionPerformed
@@ -681,8 +682,8 @@ public class SubjectSelection extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         SavedTimeTable s=new SavedTimeTable();
-        s.setVisible(true);
         this.setVisible(false);
+        s.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed

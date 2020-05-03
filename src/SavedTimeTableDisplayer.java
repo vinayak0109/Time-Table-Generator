@@ -1,3 +1,9 @@
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +21,45 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
      */
     public SavedTimeTableDisplayer() {
         initComponents();
+        
+        DefaultTableCellRenderer c = new DefaultTableCellRenderer();
+            c.setHorizontalAlignment(SwingConstants.CENTER);
+
+            for(int co=0; co<9; co++)
+            {
+                JTable.getColumnModel().getColumn(co).setCellRenderer(c);
+            }
+         
+        TableCellRenderer rendererFromHeader = JTable.getTableHeader().getDefaultRenderer();
+        JLabel headerLabel = (JLabel) rendererFromHeader;
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        
+        JTable.setShowGrid(true);
+        JTable.setShowVerticalLines(true);
+        JTable.setValueAt("Monday",0,0);
+        JTable.setValueAt("Tuesday",1,0);
+        JTable.setValueAt("Wednesday",2,0);
+        JTable.setValueAt("Thursday",3,0);
+        JTable.setValueAt("Friday",4,0);
+        JTable.setValueAt("Saturday",5,0);
+        JTable.setValueAt("L",0,5);
+        JTable.setValueAt("U",1,5);
+        JTable.setValueAt("N",2,5);
+        JTable.setValueAt("C",3,5);
+        JTable.setValueAt("H",4,5);
+        JTable.setValueAt("BREAK",5,5);
+        
+        for(int i=0; i<6; i++){
+            for(int j=0; j<4; j++){
+                JTable.setValueAt(SavedTimeTable.producedTimeTable[i][j], i, j+1);
+            }
+        }
+        
+        for(int i=0; i<6; i++){
+            for(int j=4; j<7; j++){
+                JTable.setValueAt(SavedTimeTable.producedTimeTable[i][j], i, j+2);
+            }
+        }
     }
 
     /**
@@ -28,8 +73,9 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         JTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Time Table");
 
         JTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -53,24 +99,34 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
         JTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(JTable);
 
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton1.setText("Print");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(875, 875, 875)
+                .addComponent(jButton1)
+                .addContainerGap(896, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -110,6 +166,7 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JTable;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
