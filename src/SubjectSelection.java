@@ -16,11 +16,11 @@ public class SubjectSelection extends javax.swing.JFrame {
         initComponents();
     }
     
-    static int[][] subject = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
-    static String[] sub= new String[7];
-    static ArrayList<String> list1 = new ArrayList<String>();
-    static int semester;
-    static String branch;
+    static int[][] subject = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};       //For the checking of selected subjects as tut, theory or practical
+    static String[] sub= new String[7];                                                             //For storing the subject names
+    static ArrayList<String> list1 = new ArrayList<String>();                                       //For storing all the selected subjects as tut, theory or practical
+    static int semester;                                                                            //For storing the selected semester
+    static String branch;                                                                           //For storing the selected branch
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -550,11 +550,13 @@ public class SubjectSelection extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-        semester=Integer.parseInt(semesterNumber.getSelectedItem().toString());
-        branch=branchName.getSelectedItem().toString();
-        System.out.println(semester);
-        System.out.println(branch);
+        semester=Integer.parseInt(semesterNumber.getSelectedItem().toString());         //For storing the selected semester
+        branch=branchName.getSelectedItem().toString();                                 //For stroing the selected branch
         
+//        System.out.println(semester);
+//        System.out.println(branch);
+        
+        //For setting the labels of TeacherSelection frame as the given subject name
         TeacherSelection s1;
         try {
             s1 = new TeacherSelection();
@@ -570,6 +572,7 @@ public class SubjectSelection extends javax.swing.JFrame {
             Logger.getLogger(SubjectSelection.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        //For storing the subject names
         sub[0]=sss1.getText();
         sub[1]=sss2.getText();
         sub[2]=sss3.getText();
@@ -578,6 +581,8 @@ public class SubjectSelection extends javax.swing.JFrame {
         sub[5]=sss6.getText();
         sub[6]=sss7.getText();
        
+        //For marking the selected subject as its type as theory, tutorial or practical
+        //and For adding all the selected subjects and its types in list1 
         if(this.t1.isSelected()) {
             subject[0][0]=1;
             list1.add("00");// do the thing associated with checkbox1

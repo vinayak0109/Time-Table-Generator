@@ -32,6 +32,7 @@ public class RegisterPage extends javax.swing.JFrame {
     public RegisterPage() {
         initComponents();
         
+        //For database connectivity
         try{
             Class.forName(driver);
             conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/teachers?zeroDateTimeBehavior=convertToNull", user, "");
@@ -160,20 +161,25 @@ public class RegisterPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+        //For cancel button
         new LoginPage().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_cancelActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
+        //For reset button
         userName.setText("");
         passwordField.setText("");
         masterPassword.setText("");
     }//GEN-LAST:event_resetActionPerformed
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
+        //For register button
         String username = userName.getText();
         String password = new String(passwordField.getPassword());
         String masterPwd = new String(masterPassword.getPassword());
+        
+        //For checking the credential and if they are correct then store that data in the login table in database for future use
         if(masterPwd.equals("vinayak")){
             String query="CREATE TABLE IF NOT EXISTS `login`("+"`username` VARCHAR(16) NOT NULL, `password` VARCHAR(16))";
             try {
@@ -188,6 +194,7 @@ public class RegisterPage extends javax.swing.JFrame {
                 Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else{
+            //If the master password is not correctly entered by the user
             JOptionPane.showMessageDialog(null, "Invalid master password", "Registration error", JOptionPane.ERROR_MESSAGE);
             userName.setText("");
             passwordField.setText("");

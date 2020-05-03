@@ -32,6 +32,7 @@ public class LoginPage extends javax.swing.JFrame {
     public LoginPage() {
         initComponents();
         
+        //For database connectivity
         try{
             Class.forName(driver);
             conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/teachers?zeroDateTimeBehavior=convertToNull", user, "");
@@ -168,11 +169,14 @@ public class LoginPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
+        //For login button
         String username=userName.getText();
         String password=new String(passwordField.getPassword());
-        String query="SELECT `password` FROM `login` WHERE `username`='" + username + "'";
-        int flag=0;
+        
+        String query="SELECT `password` FROM `login` WHERE `username`='" + username + "'";      //For fetching the data from the database
+        int flag=0;                                                                             //If the username is not entered correctly then bring the pop up
         try {
+            //For checking if the credential are correct or not
             rs=statements.executeQuery(query);
             while(rs.next()){
                 flag=1;
@@ -187,6 +191,8 @@ public class LoginPage extends javax.swing.JFrame {
                     passwordField.setText("");
                 }
             }
+            
+            //If the username is entered incorrectly
             if(flag==0){
                     JOptionPane.showMessageDialog(null, "Invalid credentials", "Login error", JOptionPane.ERROR_MESSAGE);
                     userName.setText("");
@@ -198,15 +204,19 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_loginActionPerformed
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+        //For the exit button
         System.exit(0);
     }//GEN-LAST:event_cancelActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
+        //For the reset button
         userName.setText("");
         passwordField.setText("");
     }//GEN-LAST:event_resetActionPerformed
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        //For the create new account label
+        //Redirect them to register page
         RegisterPage r=new RegisterPage();
         r.setVisible(true);
         this.setVisible(false);

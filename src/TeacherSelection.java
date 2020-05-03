@@ -1,4 +1,5 @@
 
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 public class TeacherSelection extends javax.swing.JFrame {
  
@@ -19,17 +21,21 @@ public class TeacherSelection extends javax.swing.JFrame {
     String driver="com.mysql.jdbc.Driver";
     String userName="root";
     String password="";
-    static int teacherList[] = new int[7];
-    static ArrayList<String> teacherName = new ArrayList<String>();
-    static ArrayList<String> teacherShortName = new ArrayList<String>();
-    static int timeTableID[][] = new int[6][7];
-    static String section;
+    
+    static int teacherList[] = new int[7];                                          //For storing the ID's for each selected teacher
+    static ArrayList<String> teacherName = new ArrayList<String>();                 //For storing the names of the selected teacher
+    static ArrayList<String> teacherShortName = new ArrayList<String>();            //For storing the short names of the selected teachers which is going to be used for giving the teacher name in the Timetable
+    static int timeTableID[][] = new int[6][7];                                     //For storing all the slots alloted to which teacher for the purpose of changing their status in the database as 1 from 0
+    static String section;                                                          //For storing the selected section 
     /**
      * Creates new form second
      * @throws java.sql.SQLException
      */
     public TeacherSelection() throws SQLException {
         initComponents();
+        
+        
+        //For database connectivity
         try{
             Class.forName(driver);
             conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/teachers?zeroDateTimeBehavior=convertToNull", userName, password);
@@ -39,6 +45,8 @@ public class TeacherSelection extends javax.swing.JFrame {
         catch(ClassNotFoundException | SQLException sqle){
             System.out.println("Connection Failed");
         }
+        
+        //For setting the comboBox list with all the available teachers from the database having count > 0
         String query="select first_name, last_name from faculties where classes>0";
         rs = statements.executeQuery(query); 
         while(rs.next()){ 
@@ -70,10 +78,9 @@ public class TeacherSelection extends javax.swing.JFrame {
         //For testing
     }
     
-    static int[][] TT = new int[6][7];
-    //FOR CHANGE
-        static int change=0;
-    //FOR CHANGE
+    static int[][] TT = new int[6][7];                                              //For storing the sample timetable for the testing purpose
+    
+    static int change=0;                                                            //For getting the correct position for the Mentor/Library lecture
         
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -239,10 +246,11 @@ public class TeacherSelection extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        section=sectionName.getSelectedItem().toString();
+        section=sectionName.getSelectedItem().toString();                           //For getting the selected section
         
+        //For storing the names in teacherName array, for storing the short names in teacherShortName array
+        //and for storing the ID's of the selected teacher in the teacherList array
         String shortName ="";
-        //For teacherList array and for storing the ID's of the selected teacher in the array
         String teacher1 = jComboBox2.getSelectedItem().toString();
         shortName ="";
         shortName=shortName+teacher1.charAt(0)+teacher1.charAt(teacher1.indexOf(" ")+1);
@@ -291,6 +299,7 @@ public class TeacherSelection extends javax.swing.JFrame {
         teacherShortName.add(shortName);
         teacherName.add(teacher7);
         teacher7= teacher7.substring(0, teacher7.indexOf(" "));
+        
         
         try { 
             String query="select teacher_id from faculties where first_name='" + teacher1 + "'";
@@ -342,18 +351,19 @@ public class TeacherSelection extends javax.swing.JFrame {
             Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        int[][] periods = new int[7][3];
-        //FOR CHANGE
-            
-            for(int i=0; i<5; i++){
-                if(SubjectSelection.subject[i][2]==0){
-                    change=i;
-                    SubjectSelection.subject[i][2]=1;
-                    SubjectSelection.list1.add(Integer.toString(i)+"2");
-                    break;
-                }
+        int[][] periods = new int[7][3];                                                    //Stores the count of each lecture
+        
+        //For getting the correct position for Mentor/Library lecture
+        for(int i=0; i<5; i++){
+            if(SubjectSelection.subject[i][2]==0){
+                change=i;
+                SubjectSelection.subject[i][2]=1;
+                SubjectSelection.list1.add(Integer.toString(i)+"2");
+                break;
             }
-        //FOR CHANGE
+        }
+        
+        //For getting the count of each lecture according to its type and stores it in periods array
         for(int i=0; i<7; i++)
         {
           if(SubjectSelection.subject[i][0]==1)
@@ -377,9 +387,12 @@ public class TeacherSelection extends javax.swing.JFrame {
           }
         }
 
-        Random random = new Random();
+        Random random = new Random();                                                           //For the random object declaration
+        
         System.out.print(SubjectSelection.list1.toString());
 
+        ////For the to-do task
+        
         ////provide the dropdown list for the selection of teacher        DONE
         ////and for the selected teacher with particular subject, it is inserted in the list of teacher array as described below
         ////int teacher_list=new int[7];
@@ -413,30 +426,34 @@ public class TeacherSelection extends javax.swing.JFrame {
         ////when the save button is clicked in TimeTable frame all the selected teachers will be putted in the set and the count for the classes in the database get decreased by 1
         ////when the save button is clicked update the chart of teacher with 1, for let say ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed
         
+        
+        //Actual algorithm for the time table generation
         for(int i=0; i<6; i++)
         {
-              ArrayList<String> list = new ArrayList<String>();
-              int counter=0;                                    //No two lab should come in the same day
+              ArrayList<String> list = new ArrayList<String>();                     //For keeping the track for all the selected subjects for that day FOR TESTING PURPOSE
+              int counter=0;                                                        //No two lab should come in the same day
               for(int j=0; j<7; j++)
               {
-                      int x,y,flag=1;
-                      String r="";
-                      int checkedValue=1;
+                      int x,y,flag=1;                                               //flag variable is to ensure that no two lectures come in the same day
+                      String r="";                                                  //For storing the selcted lecture
+                      int checkedValue=1;                                           //For checking if the selected randomly teacher is available for that slot or not
                       do
                       {
                           flag=1;
 
+                          //Anthing can come here as there is no boundation that the practical could not appear here.
                           if(counter==0 && (j!=1 && j!=3 && j!=4 && j!=6))
-                          {                                       //Anthing can come here as there is no boundation that the practical could not appear here.
+                          {                                       
                               int randomNumber=random.nextInt(SubjectSelection.list1.size());
-                              r=SubjectSelection.list1.get(randomNumber);
+                              r=SubjectSelection.list1.get(randomNumber);                           //Randomly selects any remaining lecture from the list1
                           }
                           else
                           {
-                              do                                  //This is loop to ensure that here come the theory or tutorial only
+                              //This loop is to ensure that here come the theory or tutorial only
+                              do                                  
                               {
                                   int randomNumber=random.nextInt(SubjectSelection.list1.size());
-                                  r=SubjectSelection.list1.get(randomNumber);
+                                  r=SubjectSelection.list1.get(randomNumber);                       //Randomly selects any remaining lecture from the list1
                                   System.out.println("hey  i am r "+ r);
                                   y=Integer.parseInt(String.valueOf(r.charAt(1)));
                               }while(y==1);
@@ -446,36 +463,32 @@ public class TeacherSelection extends javax.swing.JFrame {
                           {
                               if(list.indexOf(r)!=-1)
                               {
-                                  flag=0;                       //for not adding the subject which is already added for that day
+                                  flag=0;                                                           //for not adding the subject which is already added for that day
                               }
                               for(int l=0;l<list.size();l++)
                               {
                                   Character c=new Character(list.get(l).charAt(0));
                                   Character d=new Character(list.get(l).charAt(1));
-                                  //if(r.charAt(1)!=1)
-                                  //{ 
-                                  //Below code for ensuring that in a single day no two practical can come
                                   
-                                      if(c.equals(new Character(r.charAt(0))) && !((new Character(r.charAt(1)).equals(new Character('1'))) || d.equals(new Character('1'))))
-                                      {
-                                          flag=0;
-                                          break;
-                                      }
-                                  //}
+                                    //For ensuring that in a single day no two practical can come
+                                    if(c.equals(new Character(r.charAt(0))) && !((new Character(r.charAt(1)).equals(new Character('1'))) || d.equals(new Character('1'))))
+                                    {
+                                        flag=0;
+                                        break;
+                                    }
                               }
                           }
 
-                      x=Integer.parseInt(String.valueOf(r.charAt(0)));
-                      y=Integer.parseInt(String.valueOf(r.charAt(1)));
+                      x=Integer.parseInt(String.valueOf(r.charAt(0)));                              //For storing which subject is selected
+                      y=Integer.parseInt(String.valueOf(r.charAt(1)));                              //For storing the selected lecture that it is theory, tut or practical
 
                       //For checking if the selected slot for the teacher is availble or not by storing the value in the checkedValue variable
-                      //For change
-                      int id=teacherList[x];
+                      int id=teacherList[x];                                                        //For storing the ID of the selected teacher
 //                      System.out.println("ID"+id);
                       timeTableID[i][j]=id;
                       int col=j+1;
                       int row=i+1;
-                      String query="select "+col+"s from `"+id+"` where `row`="+row;
+                      String query="select "+col+"f from `"+id+"` where `row`="+row;
                           try {
                               rs = statements.executeQuery(query);
                               while(rs.next()){
@@ -486,11 +499,12 @@ public class TeacherSelection extends javax.swing.JFrame {
                           } catch (SQLException ex) {
                               Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
                           }
-                        //For change
                       
-                      }while(periods[x][y]<=0 || flag==0 || checkedValue==1);         //if there is no period available for the randoml selected subject then the do the whole thing again
+                      }while(periods[x][y]<=0 || flag==0 || checkedValue==1);         
+                      //if there is no period available for the randomly selected subject or if the selected subject teacher is not available for that slot, 
+                      //then the do the whole thing again
 
-
+                      //For giving two simultaneous lecture if it is a lab
                       if(y==1)
                       {
                               TT[i][j]=TT[i][j+1]=Integer.parseInt(r);   
@@ -505,8 +519,9 @@ public class TeacherSelection extends javax.swing.JFrame {
                               periods[x][y]-=1;
                       }
 
-                      list.add(r);
-
+                      list.add(r);                                                      //For adding the selected lecture in the list
+                      
+                      //If for the selected period the lecures are over then we will delete them from our list1
                       if(periods[x][y]==0){
                           SubjectSelection.list1.remove(new String(r));
                       }
@@ -523,12 +538,13 @@ public class TeacherSelection extends javax.swing.JFrame {
                       //for checking
 
               }
-              list.removeAll(list);
+              
+              list.removeAll(list);                                                 //We remove all the elements from the list as the day is over and another day will start with another list
               System.out.println("");
               System.out.println("");
         }
         
-        //just for checking
+        //For checking
         System.out.println("Teachers ID");
         for(int i=0; i<7; i++){
             System.out.print(teacherList[i]+" ");
@@ -594,7 +610,9 @@ public class TeacherSelection extends javax.swing.JFrame {
                 }
             }
         });
-    }
+
+        }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -618,3 +636,5 @@ public class TeacherSelection extends javax.swing.JFrame {
     public javax.swing.JLabel ss7;
     // End of variables declaration//GEN-END:variables
 }
+
+

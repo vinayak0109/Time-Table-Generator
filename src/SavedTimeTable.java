@@ -29,16 +29,18 @@ public class SavedTimeTable extends javax.swing.JFrame {
     String driver="com.mysql.jdbc.Driver";
     String userName="root";
     String password="";
-    static int semester;
-    static String branch;
-    static String section;
-    static String[][] producedTimeTable = new String[6][7];
+    
+    static int semester;                                                            //For storing the selected semester
+    static String branch;                                                           //For storing the selected branch
+    static String section;                                                          //For storing the selected section
+    static String[][] producedTimeTable = new String[6][7];                         //For storing the timetable fetched from the database
     /**
      * Creates new form SavedTimeTable
      */
     public SavedTimeTable() {
         initComponents();
         
+        //For database connectivity
         try{
             Class.forName(driver);
             conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/teachers?zeroDateTimeBehavior=convertToNull", userName, password);
@@ -219,18 +221,24 @@ public class SavedTimeTable extends javax.swing.JFrame {
     }//GEN-LAST:event_branchSelectorActionPerformed
 
     private void showActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showActionPerformed
+        
+        //For storing the selected options
         semester=Integer.parseInt(semesterSelector.getSelectedItem().toString());
         branch=branchSelector.getSelectedItem().toString();
         section=sectionSelector.getSelectedItem().toString();
+        
+        //For storing the data in the producedTimeTable if the table is present for the given inputs
         DatabaseMetaData dbm;
         String tableName="";
-        tableName=tableName + semester + branch + section;
+        tableName=tableName + semester + branch + section;                          //For storing the name of the table
         try {
+            //For checking if "tableName" table is there
             dbm = conn.getMetaData();
-            // check if "employee" table is there
             ResultSet tables = dbm.getTables(null, null, tableName, null);
             if (tables.next()) {
                 System.out.println("Exists");       // Table exists
+                
+                //Fetch data from the database and store it in producedTimtTable array
                 String query="SELECT * FROM `" + tableName + "`";
                 rs=statements.executeQuery(query);
                 int row=0;
@@ -249,6 +257,7 @@ public class SavedTimeTable extends javax.swing.JFrame {
                 new SavedTimeTableDisplayer().setVisible(true);
             }
             else {
+                //if time table is not available for the given inputs
                 JOptionPane.showMessageDialog(null, "Time-Table doesn't exists.", "Error", JOptionPane.ERROR_MESSAGE);       // Table does not exist
             }
         } catch (SQLException ex) {

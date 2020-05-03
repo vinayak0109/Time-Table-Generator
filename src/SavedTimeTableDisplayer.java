@@ -22,6 +22,7 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
     public SavedTimeTableDisplayer() {
         initComponents();
         
+        //For some table stuff
         DefaultTableCellRenderer c = new DefaultTableCellRenderer();
             c.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -36,6 +37,8 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
         
         JTable.setShowGrid(true);
         JTable.setShowVerticalLines(true);
+        
+        //For displaying the fixed values
         JTable.setValueAt("Monday",0,0);
         JTable.setValueAt("Tuesday",1,0);
         JTable.setValueAt("Wednesday",2,0);
@@ -49,6 +52,7 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
         JTable.setValueAt("H",4,5);
         JTable.setValueAt("BREAK",5,5);
         
+        //For displaying the time table fetched frome the database
         for(int i=0; i<6; i++){
             for(int j=0; j<4; j++){
                 JTable.setValueAt(SavedTimeTable.producedTimeTable[i][j], i, j+1);
