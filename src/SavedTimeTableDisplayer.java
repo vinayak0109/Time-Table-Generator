@@ -30,6 +30,7 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
         JTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Time Table");
 
         JTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         JTable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N

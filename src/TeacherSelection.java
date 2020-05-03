@@ -21,7 +21,9 @@ public class TeacherSelection extends javax.swing.JFrame {
     String password="";
     static int teacherList[] = new int[7];
     static ArrayList<String> teacherName = new ArrayList<String>();
+    static ArrayList<String> teacherShortName = new ArrayList<String>();
     static int timeTableID[][] = new int[6][7];
+    static String section;
     /**
      * Creates new form second
      * @throws java.sql.SQLException
@@ -78,7 +80,7 @@ public class TeacherSelection extends javax.swing.JFrame {
     private void initComponents() {
 
         jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox1 = new javax.swing.JComboBox();
+        sectionName = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         ss1 = new javax.swing.JLabel();
         ss2 = new javax.swing.JLabel();
@@ -99,12 +101,13 @@ public class TeacherSelection extends javax.swing.JFrame {
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Teacher Selection");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        sectionName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C" }));
+        sectionName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                sectionNameActionPerformed(evt);
             }
         });
 
@@ -161,7 +164,7 @@ public class TeacherSelection extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(sectionName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
@@ -190,7 +193,7 @@ public class TeacherSelection extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sectionName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -235,26 +238,56 @@ public class TeacherSelection extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
+        section=sectionName.getSelectedItem().toString();
+        
+        String shortName ="";
         //For teacherList array and for storing the ID's of the selected teacher in the array
         String teacher1 = jComboBox2.getSelectedItem().toString();
+        shortName ="";
+        shortName=shortName+teacher1.charAt(0)+teacher1.charAt(teacher1.indexOf(" ")+1);
+        teacherShortName.add(shortName);
         teacherName.add(teacher1);
         teacher1= teacher1.substring(0, teacher1.indexOf(" ")); 
+        
         String teacher2 = jComboBox3.getSelectedItem().toString();
+        shortName ="";
+        shortName=shortName+teacher2.charAt(0)+teacher2.charAt(teacher2.indexOf(" ")+1);
+        teacherShortName.add(shortName);
         teacherName.add(teacher2);
         teacher2= teacher2.substring(0, teacher2.indexOf(" "));
+        
         String teacher3 = jComboBox5.getSelectedItem().toString();
+        shortName ="";
+        shortName=shortName+teacher3.charAt(0)+teacher3.charAt(teacher3.indexOf(" ")+1);
+        teacherShortName.add(shortName);
         teacherName.add(teacher3);
         teacher3= teacher3.substring(0, teacher3.indexOf(" "));
+        
         String teacher4 = jComboBox6.getSelectedItem().toString();
+        shortName ="";
+        shortName=shortName+teacher4.charAt(0)+teacher4.charAt(teacher4.indexOf(" ")+1);
+        teacherShortName.add(shortName);
         teacherName.add(teacher4);
         teacher4= teacher4.substring(0, teacher4.indexOf(" "));
+        
         String teacher5 = jComboBox7.getSelectedItem().toString();
+        shortName ="";
+        shortName=shortName+teacher5.charAt(0)+teacher5.charAt(teacher5.indexOf(" ")+1);
+        teacherShortName.add(shortName);
         teacherName.add(teacher5);
         teacher5= teacher5.substring(0, teacher5.indexOf(" "));
+        
         String teacher6 = jComboBox8.getSelectedItem().toString();
+        shortName ="";
+        shortName=shortName+teacher6.charAt(0)+teacher6.charAt(teacher6.indexOf(" ")+1);
+        teacherShortName.add(shortName);
         teacherName.add(teacher6);
         teacher6= teacher6.substring(0, teacher6.indexOf(" "));
+        
         String teacher7 = jComboBox9.getSelectedItem().toString();
+        shortName ="";
+        shortName=shortName+teacher7.charAt(0)+teacher7.charAt(teacher7.indexOf(" ")+1);
+        teacherShortName.add(shortName);
         teacherName.add(teacher7);
         teacher7= teacher7.substring(0, teacher7.indexOf(" "));
         
@@ -360,10 +393,10 @@ public class TeacherSelection extends javax.swing.JFrame {
         
         //once the time table is successfully generated it get stored in the database in the form of table with name SemsterBranchSection 1CSB 
         //when the save button is clicked 1 semester form cse branch and for the b section 
-        //one new frame for the display of time table
-        //which will have the dropdown for semester branch and section with a button of show 
-        //as soon as user selects the options and click the show button the time table will get displayed to the user
-        //and if it is not present then the message will appear as the time table is not generated yet for the given input.
+        ////one new frame for the display of time table
+        ////which will have the dropdown for semester branch and section with a button of show 
+        ////as soon as user selects the options and click the show button the time table will get displayed to the user
+        ////and if it is not present then the message will appear as the time table is not generated yet for the given input.
         
         //add the teacher name in the time table with the help of teacherName array
         //create tables for all the teachers with their ID number
@@ -514,9 +547,9 @@ public class TeacherSelection extends javax.swing.JFrame {
   
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void sectionNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectionNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_sectionNameActionPerformed
 
     private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
         // TODO add your handling code here:
@@ -564,7 +597,6 @@ public class TeacherSelection extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
@@ -575,6 +607,7 @@ public class TeacherSelection extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JComboBox sectionName;
     public javax.swing.JLabel ss1;
     public javax.swing.JLabel ss2;
     public javax.swing.JLabel ss3;
