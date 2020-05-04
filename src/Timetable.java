@@ -263,50 +263,50 @@ public class Timetable extends javax.swing.JFrame {
         if(dialogResult == JOptionPane.YES_OPTION){
             
             //For updating the classes count in the database WORKING FINE
-//            Set<Integer> hashSet = new HashSet<Integer>(); 
-//            for(int i=0; i<7; i++){
-//                hashSet.add(TeacherSelection.teacherList[i]);
-//            }
-//            for(Integer id: hashSet){
-//                String query="UPDATE `faculties` SET `classes`=`classes`- 1 WHERE `teacher_id`="+id;
-//                try {
-//                    statements.executeUpdate(query);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
+            Set<Integer> hashSet = new HashSet<Integer>(); 
+            for(int i=0; i<7; i++){
+                hashSet.add(TeacherSelection.teacherList[i]);
+            }
+            for(Integer id: hashSet){
+                String query="UPDATE `faculties` SET `classes`=`classes`- 1 WHERE `teacher_id`="+id;
+                try {
+                    statements.executeUpdate(query);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 
             //For updating the slot assigned to each teacher with 1
-//            for(int i=0; i<6; i++){
-//                for(int j=0; j<7; j++){
-//                    int id=TeacherSelection.timeTableID[i][j];
-//                    int col=j+1;
-//                    int row=i+1;
-//                    String query="UPDATE `"+id+"` SET `"+col+"f`=1 WHERE `row`="+row;
-//                    try {
-//                        statements.executeUpdate(query);
-//                    } catch (SQLException ex) {
-//                        Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//            }
+            for(int i=0; i<6; i++){
+                for(int j=0; j<7; j++){
+                    int id=TeacherSelection.timeTableID[i][j];
+                    int col=j+1;
+                    int row=i+1;
+                    String query="UPDATE `"+id+"` SET `"+col+"f`=1 WHERE `row`="+row;
+                    try {
+                        statements.executeUpdate(query);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Timetable.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
 
             //For saving the time table in the database
-//            String query="CREATE TABLE IF NOT EXISTS `" + SubjectSelection.semester + SubjectSelection.branch + TeacherSelection.section + "`("+
-//                    " `row` int(2), `1f` VARCHAR(40), `2f` VARCHAR(40), `3f` VARCHAR(40), `4f` VARCHAR(40), `5f` VARCHAR(40), `6f` VARCHAR(40), `7f` VARCHAR(40))";
-//            try {
-//                statements.executeUpdate(query);
-//                for(int i=0; i<6; i++){
-//                    int row=i+1;
-//                    query="INSERT INTO `" + SubjectSelection.semester + SubjectSelection.branch + TeacherSelection.section + "` (`row`, `1f`, `2f`, `3f`, `4f`, `5f`, `6f`, `7f`) "
-//                           + "VALUES ('" + row + "', '" + generatedTimeTable[i][0] + "', '" + generatedTimeTable[i][1] + "', '" + generatedTimeTable[i][2] 
-//                           + "', '" + generatedTimeTable[i][3] + "', '" + generatedTimeTable[i][4] + "', '" + generatedTimeTable[i][5] 
-//                           + "', '" + generatedTimeTable[i][6] + "')";
-//                    statements.executeUpdate(query);
-//                }                
-//            } catch (SQLException ex) {
-//                Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            String query="CREATE TABLE IF NOT EXISTS `" + SubjectSelection.semester + SubjectSelection.branch + TeacherSelection.section + "`("+
+                    " `row` int(2), `1f` VARCHAR(40), `2f` VARCHAR(40), `3f` VARCHAR(40), `4f` VARCHAR(40), `5f` VARCHAR(40), `6f` VARCHAR(40), `7f` VARCHAR(40))";
+            try {
+                statements.executeUpdate(query);
+                for(int i=0; i<6; i++){
+                    int row=i+1;
+                    query="INSERT INTO `" + SubjectSelection.semester + SubjectSelection.branch + TeacherSelection.section + "` (`row`, `1f`, `2f`, `3f`, `4f`, `5f`, `6f`, `7f`) "
+                           + "VALUES ('" + row + "', '" + generatedTimeTable[i][0] + "', '" + generatedTimeTable[i][1] + "', '" + generatedTimeTable[i][2] 
+                           + "', '" + generatedTimeTable[i][3] + "', '" + generatedTimeTable[i][4] + "', '" + generatedTimeTable[i][5] 
+                           + "', '" + generatedTimeTable[i][6] + "')";
+                    statements.executeUpdate(query);
+                }                
+            } catch (SQLException ex) {
+                Logger.getLogger(RegisterPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             //For giving the message that the timetable is successfully stored in database
             JOptionPane.showMessageDialog(null, "Successfully saved!");

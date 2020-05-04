@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,6 +82,10 @@ public class TeacherSelection extends javax.swing.JFrame {
     }
     
     static int[][] TT = new int[6][7];                                              //For storing the sample timetable for the testing purpose
+    
+    //For change
+    static String[][] TTUpdated = new String[6][7];
+    //For change
     
     static int change=0;                                                            //For getting the correct position for the Mentor/Library lecture
         
@@ -426,123 +433,169 @@ public class TeacherSelection extends javax.swing.JFrame {
         ////when the save button is clicked in TimeTable frame all the selected teachers will be putted in the set and the count for the classes in the database get decreased by 1
         ////when the save button is clicked update the chart of teacher with 1, for let say ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed
         
+        //For change
+        Map<String, Integer> m = new HashMap<String, Integer>();
+        for(int i=0; i<SubjectSelection.list1.size(); i++){
+            String s=SubjectSelection.list1.get(i);
+		if(s.charAt(1)=='0'){
+			m.put(s, new Integer(5));
+		} else if(s.charAt(1)=='2'){
+			m.put(s, new Integer(1));
+		} else if(s.charAt(1)=='1' && (s.charAt(0)=='5' || s.charAt(0)=='6')){
+			m.put(s, new Integer(4));
+		} else{
+			m.put(s, new Integer(2));
+		}
+        }
+        
+        // using for-each loop for iteration over Map.entrySet() 
+        for (Map.Entry<String,Integer> entry : m.entrySet()){  
+            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
+        }
+        
+        for(int i=0;i<6;i++){
+            for(int j=0;j<7;j++){
+		TTUpdated[i][j]="";
+            }
+	}
+        
+        for(int j=0;j<14;j++){
+            System.out.print(SubjectSelection.list1.get(j)+" ");
+	}System.out.println();
+        
+        Collections.shuffle(SubjectSelection.list1); 
+        
+        for(int j=0;j<14;j++){
+            System.out.print(SubjectSelection.list1.get(j)+" ");
+	}System.out.println();
+        
+        generator(6, 7, 0, 0, SubjectSelection.list1, m);
+        
+        for(int i=0; i<6; i++){
+            for(int j=0; j<7; j++){
+                TT[i][j]=Integer.parseInt(TTUpdated[i][j]);
+                System.out.print(TT[i][j]+" ");
+            }
+            System.out.println();
+        }
+        //For change
         
         //Actual algorithm for the time table generation
-        for(int i=0; i<6; i++)
-        {
-              ArrayList<String> list = new ArrayList<String>();                     //For keeping the track for all the selected subjects for that day FOR TESTING PURPOSE
-              int counter=0;                                                        //No two lab should come in the same day
-              for(int j=0; j<7; j++)
-              {
-                      int x,y,flag=1;                                               //flag variable is to ensure that no two lectures come in the same day
-                      String r="";                                                  //For storing the selcted lecture
-                      int checkedValue=1;                                           //For checking if the selected randomly teacher is available for that slot or not
-                      do
-                      {
-                          flag=1;
-
-                          //Anthing can come here as there is no boundation that the practical could not appear here.
-                          if(counter==0 && (j!=1 && j!=3 && j!=4 && j!=6))
-                          {                                       
-                              int randomNumber=random.nextInt(SubjectSelection.list1.size());
-                              r=SubjectSelection.list1.get(randomNumber);                           //Randomly selects any remaining lecture from the list1
-                          }
-                          else
-                          {
-                              //This loop is to ensure that here come the theory or tutorial only
-                              do                                  
-                              {
-                                  int randomNumber=random.nextInt(SubjectSelection.list1.size());
-                                  r=SubjectSelection.list1.get(randomNumber);                       //Randomly selects any remaining lecture from the list1
-                                  System.out.println("hey  i am r "+ r);
-                                  y=Integer.parseInt(String.valueOf(r.charAt(1)));
-                              }while(y==1);
-                          }
-
-                          if(list.size()!=0)
-                          {
-                              if(list.indexOf(r)!=-1)
-                              {
-                                  flag=0;                                                           //for not adding the subject which is already added for that day
-                              }
-                              for(int l=0;l<list.size();l++)
-                              {
-                                  Character c=new Character(list.get(l).charAt(0));
-                                  Character d=new Character(list.get(l).charAt(1));
-                                  
-                                    //For ensuring that in a single day no two practical can come
-                                    if(c.equals(new Character(r.charAt(0))) && !((new Character(r.charAt(1)).equals(new Character('1'))) || d.equals(new Character('1'))))
-                                    {
-                                        flag=0;
-                                        break;
-                                    }
-                              }
-                          }
-
-                      x=Integer.parseInt(String.valueOf(r.charAt(0)));                              //For storing which subject is selected
-                      y=Integer.parseInt(String.valueOf(r.charAt(1)));                              //For storing the selected lecture that it is theory, tut or practical
-
-                      //For checking if the selected slot for the teacher is availble or not by storing the value in the checkedValue variable
-                      int id=teacherList[x];                                                        //For storing the ID of the selected teacher
-//                      System.out.println("ID"+id);
-                      timeTableID[i][j]=id;
-                      int col=j+1;
-                      int row=i+1;
-                      String query="select "+col+"f from `"+id+"` where `row`="+row;
-                          try {
-                              rs = statements.executeQuery(query);
-                              while(rs.next()){
-                                  checkedValue=rs.getInt(1);
-                              }
-                              System.out.println("Checked Value"+checkedValue);
-                              
-                          } catch (SQLException ex) {
-                              Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
-                          }
-                      
-                      }while(periods[x][y]<=0 || flag==0 || checkedValue==1);         
-                      //if there is no period available for the randomly selected subject or if the selected subject teacher is not available for that slot, 
-                      //then the do the whole thing again
-
-                      //For giving two simultaneous lecture if it is a lab
-                      if(y==1)
-                      {
-                              TT[i][j]=TT[i][j+1]=Integer.parseInt(r);   
-                              timeTableID[i][j+1]=teacherList[x];
-                              j+=1;
-                              periods[x][y]-=2;
-                              counter=1;
-                      }
-                      else
-                      {
-                              TT[i][j]=Integer.parseInt(r);
-                              periods[x][y]-=1;
-                      }
-
-                      list.add(r);                                                      //For adding the selected lecture in the list
-                      
-                      //If for the selected period the lecures are over then we will delete them from our list1
-                      if(periods[x][y]==0){
-                          SubjectSelection.list1.remove(new String(r));
-                      }
-                          
-                      //for checking
-                      for(int k=0; k<7; k++)
-                      {
-                          System.out.print(periods[k][0]);
-                          System.out.print(periods[k][1]);
-                          System.out.println(periods[k][2]);
-                      }
-                      System.out.println(list.toString());
-                      System.out.println(SubjectSelection.list1.toString());
-                      //for checking
-
-              }
-              
-              list.removeAll(list);                                                 //We remove all the elements from the list as the day is over and another day will start with another list
-              System.out.println("");
-              System.out.println("");
-        }
+//        for(int i=0; i<6; i++)
+//        {
+//              ArrayList<String> list = new ArrayList<String>();                     //For keeping the track for all the selected subjects for that day FOR TESTING PURPOSE
+//              int counter=0;                                                        //No two lab should come in the same day
+//              for(int j=0; j<7; j++)
+//              {
+//                      int x,y,flag=1;                                               //flag variable is to ensure that no two lectures come in the same day
+//                      String r="";                                                  //For storing the selcted lecture
+//                      int checkedValue=1;                                           //For checking if the selected randomly teacher is available for that slot or not
+//                      do
+//                      {
+//                          flag=1;
+//
+//                          //Anthing can come here as there is no boundation that the practical could not appear here.
+//                          if(counter==0 && (j!=1 && j!=3 && j!=4 && j!=6))
+//                          {                                       
+//                              int randomNumber=random.nextInt(SubjectSelection.list1.size());
+//                              r=SubjectSelection.list1.get(randomNumber);                           //Randomly selects any remaining lecture from the list1
+//                          }
+//                          else
+//                          {
+//                              //This loop is to ensure that here come the theory or tutorial only
+//                              do                                  
+//                              {
+//                                  int randomNumber=random.nextInt(SubjectSelection.list1.size());
+//                                  r=SubjectSelection.list1.get(randomNumber);                       //Randomly selects any remaining lecture from the list1
+//                                  System.out.println("hey  i am r "+ r);
+//                                  y=Integer.parseInt(String.valueOf(r.charAt(1)));
+//                              }while(y==1);
+//                          }
+//
+//                          if(list.size()!=0)
+//                          {
+//                              if(list.indexOf(r)!=-1)
+//                              {
+//                                  flag=0;                                                           //for not adding the subject which is already added for that day
+//                              }
+//                              for(int l=0;l<list.size();l++)
+//                              {
+//                                  Character c=new Character(list.get(l).charAt(0));
+//                                  Character d=new Character(list.get(l).charAt(1));
+//                                  
+//                                    //For ensuring that in a single day no two practical can come
+//                                    if(c.equals(new Character(r.charAt(0))) && !((new Character(r.charAt(1)).equals(new Character('1'))) || d.equals(new Character('1'))))
+//                                    {
+//                                        flag=0;
+//                                        break;
+//                                    }
+//                              }
+//                          }
+//
+//                      x=Integer.parseInt(String.valueOf(r.charAt(0)));                              //For storing which subject is selected
+//                      y=Integer.parseInt(String.valueOf(r.charAt(1)));                              //For storing the selected lecture that it is theory, tut or practical
+//
+//                      //For checking if the selected slot for the teacher is availble or not by storing the value in the checkedValue variable
+//                      int id=teacherList[x];                                                        //For storing the ID of the selected teacher
+////                      System.out.println("ID"+id);
+//                      timeTableID[i][j]=id;
+//                      int col=j+1;
+//                      int row=i+1;
+//                      String query="select "+col+"f from `"+id+"` where `row`="+row;
+//                          try {
+//                              rs = statements.executeQuery(query);
+//                              while(rs.next()){
+//                                  checkedValue=rs.getInt(1);
+//                              }
+//                              System.out.println("Checked Value"+checkedValue);
+//                              
+//                          } catch (SQLException ex) {
+//                              Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
+//                          }
+//                      
+//                      }while(periods[x][y]<=0 || flag==0 || checkedValue==1);         
+//                      //if there is no period available for the randomly selected subject or if the selected subject teacher is not available for that slot, 
+//                      //then the do the whole thing again
+//
+//                      //For giving two simultaneous lecture if it is a lab
+//                      if(y==1)
+//                      {
+//                              TT[i][j]=TT[i][j+1]=Integer.parseInt(r);   
+//                              timeTableID[i][j+1]=teacherList[x];
+//                              j+=1;
+//                              periods[x][y]-=2;
+//                              counter=1;
+//                      }
+//                      else
+//                      {
+//                              TT[i][j]=Integer.parseInt(r);
+//                              periods[x][y]-=1;
+//                      }
+//
+//                      list.add(r);                                                      //For adding the selected lecture in the list
+//                      
+//                      //If for the selected period the lecures are over then we will delete them from our list1
+//                      if(periods[x][y]==0){
+//                          SubjectSelection.list1.remove(new String(r));
+//                      }
+//                          
+//                      //for checking
+//                      for(int k=0; k<7; k++)
+//                      {
+//                          System.out.print(periods[k][0]);
+//                          System.out.print(periods[k][1]);
+//                          System.out.println(periods[k][2]);
+//                      }
+//                      System.out.println(list.toString());
+//                      System.out.println(SubjectSelection.list1.toString());
+//                      //for checking
+//
+//              }
+//              
+//              list.removeAll(list);                                                 //We remove all the elements from the list as the day is over and another day will start with another list
+//              System.out.println("");
+//              System.out.println("");
+//        }
         
         //For checking
         System.out.println("Teachers ID");
@@ -635,6 +688,160 @@ public class TeacherSelection extends javax.swing.JFrame {
     public javax.swing.JLabel ss6;
     public javax.swing.JLabel ss7;
     // End of variables declaration//GEN-END:variables
+
+    private boolean generator(int r, int c, int row, int col, ArrayList<String> list1, Map<String, Integer> m) {
+        if(row==r){
+            System.out.println("GENERATED TIME TABLE LOOK AT IT CLOSELY");
+		for(int i=0;i<6;i++){
+			for(int j=0;j<7;j++){
+				System.out.print(TTUpdated[i][j]+" ");
+			}
+			System.out.println();
+		}
+		return true;		
+	}
+        if(row>=r || col>=c){
+		return false;
+	}
+	for(int j=0;j<SubjectSelection.list1.size();j++){
+		String s=SubjectSelection.list1.get(j);
+		if(isPossible(r, c, row, col, s, m)){
+		for(int i=0;i<6;i++){
+			for(int k=0;k<7;k++){
+				System.out.print(TTUpdated[i][k]+" ");
+			}
+			System.out.println();
+		}                    
+			if(s.charAt(1)=='1'){
+				TTUpdated[row][col]=s;
+				TTUpdated[row][col+1]=s;
+                                int currentValue = m.get(s);
+                                m.put(s, currentValue-2);
+				if(col+2==c){
+					Collections.shuffle(SubjectSelection.list1);
+					boolean flag=generator(r, c, row+1, 0, list1, m);
+					if(!flag){
+						TTUpdated[row][col]="";
+						TTUpdated[row][col+1]="";
+                                                currentValue = m.get(s);
+                                                m.put(s, currentValue+2);
+					}else {
+						return flag;
+					}
+				} else{
+					boolean flag=generator(r, c, row, col+2, list1, m);
+					if(!flag){
+						TTUpdated[row][col]="";
+						TTUpdated[row][col+1]="";
+                                                currentValue = m.get(s);
+                                                m.put(s, currentValue+2);
+					}else {
+						return flag;
+					}
+				}
+			} else{
+				TTUpdated[row][col]=s;
+                                int currentValue = m.get(s);
+                                m.put(s, currentValue-1);
+				if(col+1==c){
+					Collections.shuffle(SubjectSelection.list1); 
+					boolean flag=generator(r, c, row+1,0, list1, m);
+					if(!flag){
+						TTUpdated[row][col]="";
+                                                currentValue = m.get(s);
+                                                m.put(s, currentValue+1);
+					}else {
+						return flag;
+					}
+				} else{
+					boolean flag=generator(r, c, row,col+1, list1, m);
+					if(!flag){
+						TTUpdated[row][col]="";
+                                                currentValue = m.get(s);
+                                                m.put(s, currentValue+1);
+					}else {
+						return flag;
+					}
+				}
+			}
+		}
+	}
+	return false;
+    }
+
+    private boolean isPossible(int r, int c, int row, int col, String s, Map<String, Integer> m) {
+        int currentValue = m.get(s);
+        if(currentValue<1){
+		return false;
+	}
+        int val1 = m.get("00");
+        int val2 = m.get("10");
+        int val3 = m.get("20");
+        int val4 = m.get("30");
+        int val5 = m.get("40");
+        if(val1>(6-row) || val2>(6-row) || val3>(6-row) || val4>(6-row) || val5>(6-row)){
+            return false;
+	}
+	for(int i=col-1;i>=0;i--){
+		if(s.equals(TTUpdated[row][i])){
+			return false;
+		}
+	}
+	int checkedValue=getChecked(row, col, s);
+	if(checkedValue==1){
+		return false;
+	}
+	if(s.charAt(1)=='1'){
+		for(int j=col-1;j>=0;j--){
+			if(TTUpdated[row][j].charAt(1)=='1'){
+				return false;
+			}
+		}
+		if(col==0 || col==2 || col==5){
+			checkedValue=getChecked(row, col+1, s);
+			if(checkedValue==1){
+				return false;
+			}
+		} else{
+			return false;
+		}
+	}
+	if(col==5){
+		int temp=0;
+		if(s.charAt(1)!=1){
+			for(int j=col-1; j>=0; j--){
+				String sTemp=TTUpdated[row][j];
+				if(sTemp.charAt(1)=='1'){
+					temp=1;
+					break;
+				}
+			}
+			if(temp==0){
+				return false;
+			}
+		}
+	}
+	return true;
+    }
+
+    private int getChecked(int row, int col, String s) {
+        int checkedValue=1;
+        int id=teacherList[Character.getNumericValue(s.charAt(0))];                                                        //For storing the ID of the selected teacher
+        timeTableID[row][col]=id;
+        int c=col+1;
+        int r=row+1;
+        String query="select "+c+"f from `"+id+"` where `row`="+r;
+        try {
+            rs = statements.executeQuery(query);
+            while(rs.next()){
+                checkedValue=rs.getInt(1);
+            }
+//            System.out.println("Checked Value"+checkedValue);                  
+        } catch (SQLException ex) {
+            Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return checkedValue;              
+    }
 }
 
 
