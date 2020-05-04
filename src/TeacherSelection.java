@@ -553,7 +553,7 @@ public class TeacherSelection extends javax.swing.JFrame {
         System.out.println("TIME TABLE");
         for(int i=0; i<6; i++){
             for(int j=0; j<7; j++){
-                System.out.print(timeTableID[i][j]+" ");
+                System.out.print(TT[i][j]+" ");
             }
             System.out.println("");
         }
