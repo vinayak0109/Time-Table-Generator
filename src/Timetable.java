@@ -111,8 +111,8 @@ public class Timetable extends javax.swing.JFrame {
                     case 12: JTable.setValueAt(t.sub[1]+"(TT)/"+t.sub[0]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(1)+"/"+TeacherSelection.teacherShortName.get(0)+")", i, j+1); break;
                     case 22: JTable.setValueAt(t.sub[2]+"(TT)/"+t.sub[3]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(2)+"/"+TeacherSelection.teacherShortName.get(3)+")", i, j+1); break;
                     case 32: JTable.setValueAt(t.sub[3]+"(TT)/"+t.sub[2]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(3)+"/"+TeacherSelection.teacherShortName.get(2)+")", i, j+1); break;
-                    case 42: JTable.setValueAt(t.sub[4]+"(TT)/"+t.sub[5]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(4)+"/"+TeacherSelection.teacherShortName.get(5)+")", i, j+1); break;
-                    case 52: JTable.setValueAt(t.sub[5]+"(TT)/"+t.sub[4]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(5)+"/"+TeacherSelection.teacherShortName.get(4)+")", i, j+1); break;
+                    case 42: JTable.setValueAt(t.sub[4]+"(TT)/"+t.sub[3]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(4)+"/"+TeacherSelection.teacherShortName.get(5)+")", i, j+1); break;
+                    case 52: JTable.setValueAt(t.sub[3]+"(TT)/"+t.sub[4]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(5)+"/"+TeacherSelection.teacherShortName.get(4)+")", i, j+1); break;
                 }
             }
             System.out.println();
@@ -149,8 +149,8 @@ public class Timetable extends javax.swing.JFrame {
                     case 12: JTable.setValueAt(t.sub[1]+"(TT)/"+t.sub[0]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(1)+"/"+TeacherSelection.teacherShortName.get(0)+")", i, j+2); break;
                     case 22: JTable.setValueAt(t.sub[2]+"(TT)/"+t.sub[3]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(2)+"/"+TeacherSelection.teacherShortName.get(3)+")", i, j+2); break;
                     case 32: JTable.setValueAt(t.sub[3]+"(TT)/"+t.sub[2]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(3)+"/"+TeacherSelection.teacherShortName.get(2)+")", i, j+2); break;
-                    case 42: JTable.setValueAt(t.sub[4]+"(TT)/"+t.sub[5]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(4)+"/"+TeacherSelection.teacherShortName.get(5)+")", i, j+2); break;
-                    case 52: JTable.setValueAt(t.sub[5]+"(TT)/"+t.sub[4]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(5)+"/"+TeacherSelection.teacherShortName.get(4)+")", i, j+2); break;
+                    case 42: JTable.setValueAt(t.sub[4]+"(TT)/"+t.sub[3]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(4)+"/"+TeacherSelection.teacherShortName.get(5)+")", i, j+2); break;
+                    case 52: JTable.setValueAt(t.sub[3]+"(TT)/"+t.sub[4]+"(TT)"+" ("+TeacherSelection.teacherShortName.get(5)+"/"+TeacherSelection.teacherShortName.get(4)+")", i, j+2); break;
                 }
             }
             System.out.println();

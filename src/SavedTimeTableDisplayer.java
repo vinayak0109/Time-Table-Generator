@@ -1,5 +1,20 @@
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.awt.print.*;
+import java.io.File;
+import java.io.IOException;
+import java.text.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -28,40 +43,40 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
 
             for(int co=0; co<9; co++)
             {
-                JTable.getColumnModel().getColumn(co).setCellRenderer(c);
+                tTable.getColumnModel().getColumn(co).setCellRenderer(c);
             }
          
-        TableCellRenderer rendererFromHeader = JTable.getTableHeader().getDefaultRenderer();
+        TableCellRenderer rendererFromHeader = tTable.getTableHeader().getDefaultRenderer();
         JLabel headerLabel = (JLabel) rendererFromHeader;
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
         
-        JTable.setShowGrid(true);
-        JTable.setShowVerticalLines(true);
+        tTable.setShowGrid(true);
+        tTable.setShowVerticalLines(true);
         
         //For displaying the fixed values
-        JTable.setValueAt("Monday",0,0);
-        JTable.setValueAt("Tuesday",1,0);
-        JTable.setValueAt("Wednesday",2,0);
-        JTable.setValueAt("Thursday",3,0);
-        JTable.setValueAt("Friday",4,0);
-        JTable.setValueAt("Saturday",5,0);
-        JTable.setValueAt("L",0,5);
-        JTable.setValueAt("U",1,5);
-        JTable.setValueAt("N",2,5);
-        JTable.setValueAt("C",3,5);
-        JTable.setValueAt("H",4,5);
-        JTable.setValueAt("BREAK",5,5);
+        tTable.setValueAt("Monday",0,0);
+        tTable.setValueAt("Tuesday",1,0);
+        tTable.setValueAt("Wednesday",2,0);
+        tTable.setValueAt("Thursday",3,0);
+        tTable.setValueAt("Friday",4,0);
+        tTable.setValueAt("Saturday",5,0);
+        tTable.setValueAt("L",0,5);
+        tTable.setValueAt("U",1,5);
+        tTable.setValueAt("N",2,5);
+        tTable.setValueAt("C",3,5);
+        tTable.setValueAt("H",4,5);
+        tTable.setValueAt("BREAK",5,5);
         
         //For displaying the time table fetched frome the database
         for(int i=0; i<6; i++){
             for(int j=0; j<4; j++){
-                JTable.setValueAt(SavedTimeTable.producedTimeTable[i][j], i, j+1);
+                tTable.setValueAt(SavedTimeTable.producedTimeTable[i][j], i, j+1);
             }
         }
         
         for(int i=0; i<6; i++){
             for(int j=4; j<7; j++){
-                JTable.setValueAt(SavedTimeTable.producedTimeTable[i][j], i, j+2);
+                tTable.setValueAt(SavedTimeTable.producedTimeTable[i][j], i, j+2);
             }
         }
     }
@@ -76,15 +91,15 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane2 = new javax.swing.JScrollPane();
-        JTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        tTable = new javax.swing.JTable();
+        download = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Time Table");
 
-        JTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        JTable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        JTable.setModel(new javax.swing.table.DefaultTableModel(
+        tTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tTable.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        tTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
@@ -97,14 +112,20 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
                 "Day", "Period 1", "Period 2", "Period 3", "Period 4", "LUNCH", "Period 5", "Period 6", "Period 7"
             }
         ));
-        JTable.setEnabled(false);
-        JTable.setRequestFocusEnabled(false);
-        JTable.setRowHeight(60);
-        JTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(JTable);
+        tTable.setEnabled(false);
+        tTable.setPreferredSize(new java.awt.Dimension(1775, 360));
+        tTable.setRequestFocusEnabled(false);
+        tTable.setRowHeight(60);
+        tTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tTable);
 
-        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("Print");
+        download.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        download.setText("Download");
+        download.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,23 +136,51 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
                 .addComponent(jScrollPane2)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(875, 875, 875)
-                .addComponent(jButton1)
-                .addContainerGap(896, Short.MAX_VALUE))
+                .addGap(871, 871, 871)
+                .addComponent(download)
+                .addContainerGap(860, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(download)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void downloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadActionPerformed
+        String h="Sem: " + SavedTimeTable.semester + "   Branch: " + SavedTimeTable.branch + "   Section: " +SavedTimeTable.section;
+        MessageFormat header = new MessageFormat(h);
+        MessageFormat footer = new MessageFormat("Created by Vinayak");
+        String tableName=SavedTimeTable.semester + SavedTimeTable.branch + SavedTimeTable.section;
+        try {
+            JScrollPane scroll = new JScrollPane(tTable);
+
+            scroll.setColumnHeaderView(tTable.getTableHeader());
+            tTable.setPreferredScrollableViewportSize(tTable.getPreferredSize());
+
+            JPanel p = new JPanel(new BorderLayout());
+            p.add(scroll, BorderLayout.CENTER);
+
+            BufferedImage bi = ScreenImage.createImage(p);
+
+            this.setVisible(false);
+            JOptionPane.showMessageDialog(null, new JLabel(new ImageIcon(bi)));
+            ImageIO.write(bi,"png",new File("C:\\Users\\vinay\\Desktop\\"+ tableName +".png"));
+            JOptionPane.showMessageDialog(null, "Saved to desktop with name "+tableName, "Successfully saved", JOptionPane.ERROR_MESSAGE);
+//            tTable.print(JTable.PrintMode.NORMAL, header, footer);
+//        } catch (PrinterException ex) {
+//            Logger.getLogger(SavedTimeTableDisplayer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SavedTimeTableDisplayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_downloadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,8 +218,8 @@ public class SavedTimeTableDisplayer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable JTable;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton download;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tTable;
     // End of variables declaration//GEN-END:variables
 }

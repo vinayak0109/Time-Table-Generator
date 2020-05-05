@@ -1,6 +1,7 @@
 
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class TeacherSelection extends javax.swing.JFrame {
  
@@ -252,152 +254,238 @@ public class TeacherSelection extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
+        //For checking if time table for that sem, branch and section already exists or not
+        String tableFullName="";
         section=sectionName.getSelectedItem().toString();                           //For getting the selected section
-        
-        //For storing the names in teacherName array, for storing the short names in teacherShortName array
-        //and for storing the ID's of the selected teacher in the teacherList array
-        String shortName ="";
-        String teacher1 = jComboBox2.getSelectedItem().toString();
-        shortName ="";
-        shortName=shortName+teacher1.charAt(0)+teacher1.charAt(teacher1.indexOf(" ")+1);
-        teacherShortName.add(shortName);
-        teacherName.add(teacher1);
-        teacher1= teacher1.substring(0, teacher1.indexOf(" ")); 
-        
-        String teacher2 = jComboBox3.getSelectedItem().toString();
-        shortName ="";
-        shortName=shortName+teacher2.charAt(0)+teacher2.charAt(teacher2.indexOf(" ")+1);
-        teacherShortName.add(shortName);
-        teacherName.add(teacher2);
-        teacher2= teacher2.substring(0, teacher2.indexOf(" "));
-        
-        String teacher3 = jComboBox5.getSelectedItem().toString();
-        shortName ="";
-        shortName=shortName+teacher3.charAt(0)+teacher3.charAt(teacher3.indexOf(" ")+1);
-        teacherShortName.add(shortName);
-        teacherName.add(teacher3);
-        teacher3= teacher3.substring(0, teacher3.indexOf(" "));
-        
-        String teacher4 = jComboBox6.getSelectedItem().toString();
-        shortName ="";
-        shortName=shortName+teacher4.charAt(0)+teacher4.charAt(teacher4.indexOf(" ")+1);
-        teacherShortName.add(shortName);
-        teacherName.add(teacher4);
-        teacher4= teacher4.substring(0, teacher4.indexOf(" "));
-        
-        String teacher5 = jComboBox7.getSelectedItem().toString();
-        shortName ="";
-        shortName=shortName+teacher5.charAt(0)+teacher5.charAt(teacher5.indexOf(" ")+1);
-        teacherShortName.add(shortName);
-        teacherName.add(teacher5);
-        teacher5= teacher5.substring(0, teacher5.indexOf(" "));
-        
-        String teacher6 = jComboBox8.getSelectedItem().toString();
-        shortName ="";
-        shortName=shortName+teacher6.charAt(0)+teacher6.charAt(teacher6.indexOf(" ")+1);
-        teacherShortName.add(shortName);
-        teacherName.add(teacher6);
-        teacher6= teacher6.substring(0, teacher6.indexOf(" "));
-        
-        String teacher7 = jComboBox9.getSelectedItem().toString();
-        shortName ="";
-        shortName=shortName+teacher7.charAt(0)+teacher7.charAt(teacher7.indexOf(" ")+1);
-        teacherShortName.add(shortName);
-        teacherName.add(teacher7);
-        teacher7= teacher7.substring(0, teacher7.indexOf(" "));
-        
-        
-        try { 
-            String query="select teacher_id from faculties where first_name='" + teacher1 + "'";
-            rs = statements.executeQuery(query);
-            while(rs.next()){
-                int id=rs.getInt("teacher_id");
-                teacherList[0]=id;
+        tableFullName=tableFullName + SubjectSelection.semester + SubjectSelection.branch + section;
+        DatabaseMetaData dbm;
+        try {
+            //For checking if "tableName" table is there
+            dbm = conn.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, tableFullName, null);
+            if (tables.next()) {
+                System.out.println("Exists");       // Table exists
+                JOptionPane.showMessageDialog(null, "Time-Table already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+                this.setVisible(false);
+            } else{
+                 
+                //If not exist then do the following thing
+
+                //For storing the names in teacherName array, for storing the short names in teacherShortName array
+                //and for storing the ID's of the selected teacher in the teacherList array
+                String shortName ="";
+                String teacher1 = jComboBox2.getSelectedItem().toString();
+                shortName ="";
+                shortName=shortName+teacher1.charAt(0)+teacher1.charAt(teacher1.indexOf(" ")+1);
+                teacherShortName.add(shortName);
+                teacherName.add(teacher1);
+                teacher1= teacher1.substring(0, teacher1.indexOf(" ")); 
+
+                String teacher2 = jComboBox3.getSelectedItem().toString();
+                shortName ="";
+                shortName=shortName+teacher2.charAt(0)+teacher2.charAt(teacher2.indexOf(" ")+1);
+                teacherShortName.add(shortName);
+                teacherName.add(teacher2);
+                teacher2= teacher2.substring(0, teacher2.indexOf(" "));
+
+                String teacher3 = jComboBox5.getSelectedItem().toString();
+                shortName ="";
+                shortName=shortName+teacher3.charAt(0)+teacher3.charAt(teacher3.indexOf(" ")+1);
+                teacherShortName.add(shortName);
+                teacherName.add(teacher3);
+                teacher3= teacher3.substring(0, teacher3.indexOf(" "));
+
+                String teacher4 = jComboBox6.getSelectedItem().toString();
+                shortName ="";
+                shortName=shortName+teacher4.charAt(0)+teacher4.charAt(teacher4.indexOf(" ")+1);
+                teacherShortName.add(shortName);
+                teacherName.add(teacher4);
+                teacher4= teacher4.substring(0, teacher4.indexOf(" "));
+
+                String teacher5 = jComboBox7.getSelectedItem().toString();
+                shortName ="";
+                shortName=shortName+teacher5.charAt(0)+teacher5.charAt(teacher5.indexOf(" ")+1);
+                teacherShortName.add(shortName);
+                teacherName.add(teacher5);
+                teacher5= teacher5.substring(0, teacher5.indexOf(" "));
+
+                String teacher6 = jComboBox8.getSelectedItem().toString();
+                shortName ="";
+                shortName=shortName+teacher6.charAt(0)+teacher6.charAt(teacher6.indexOf(" ")+1);
+                teacherShortName.add(shortName);
+                teacherName.add(teacher6);
+                teacher6= teacher6.substring(0, teacher6.indexOf(" "));
+
+                String teacher7 = jComboBox9.getSelectedItem().toString();
+                shortName ="";
+                shortName=shortName+teacher7.charAt(0)+teacher7.charAt(teacher7.indexOf(" ")+1);
+                teacherShortName.add(shortName);
+                teacherName.add(teacher7);
+                teacher7= teacher7.substring(0, teacher7.indexOf(" "));
+
+
+                try { 
+                    String query="select teacher_id from faculties where first_name='" + teacher1 + "'";
+                    rs = statements.executeQuery(query);
+                    while(rs.next()){
+                        int id=rs.getInt("teacher_id");
+                        teacherList[0]=id;
+                    }
+                    query="select teacher_id from faculties where first_name='" + teacher2 + "'";
+                    rs = statements.executeQuery(query);
+                    while(rs.next()){
+                        int id=rs.getInt("teacher_id");
+                        teacherList[1]=id;
+                    }
+                    query="select teacher_id from faculties where first_name='" + teacher3 + "'";
+                    rs = statements.executeQuery(query);
+                    while(rs.next()){
+                        int id=rs.getInt("teacher_id");
+                        teacherList[2]=id;
+                    }
+                    query="select teacher_id from faculties where first_name='" + teacher4 + "'";
+                    rs = statements.executeQuery(query);
+                    while(rs.next()){
+                        int id=rs.getInt("teacher_id");
+                        teacherList[3]=id;
+                    }
+                    query="select teacher_id from faculties where first_name='" + teacher5 + "'";
+                    rs = statements.executeQuery(query);
+                    while(rs.next()){
+                        int id=rs.getInt("teacher_id");
+                        teacherList[4]=id;
+                    }
+                    query="select teacher_id from faculties where first_name='" + teacher6 + "'";
+                    rs = statements.executeQuery(query);
+                    while(rs.next()){
+                        int id=rs.getInt("teacher_id");
+                        teacherList[5]=id;
+                    }
+                    query="select teacher_id from faculties where first_name='" + teacher7 + "'";
+                    rs = statements.executeQuery(query);
+                    while(rs.next()){
+                        int id=rs.getInt("teacher_id");
+                        teacherList[6]=id;
+                    }
+        //            for(int i=0; i<7; i++){
+        //                System.out.println(teacherName.get(i));
+        //            }
+                } catch (SQLException ex) {
+                    Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                int[][] periods = new int[7][3];                                                    //Stores the count of each lecture
+
+                //For getting the correct position for Mentor/Library lecture
+                for(int i=0; i<5; i++){
+                    if(SubjectSelection.subject[i][2]==0){
+                        change=i;
+                        SubjectSelection.subject[i][2]=1;
+                        SubjectSelection.list1.add(Integer.toString(i)+"2");
+                        break;
+                    }
+                }
+
+                //For getting the count of each lecture according to its type and stores it in periods array
+                for(int i=0; i<7; i++)
+                {
+                  if(SubjectSelection.subject[i][0]==1)
+                  {
+                      periods[i][0]=5;
+                  }
+                  if(SubjectSelection.subject[i][1]==1)
+                  {
+                      if(SubjectSelection.subject[i][0]==1)
+                      {
+                          periods[i][1]=2;
+                      }
+                      else
+                      {
+                          periods[i][1]=4;
+                      }
+                  }
+                  if(SubjectSelection.subject[i][2]==1)
+                  {
+                      periods[i][2]=1;
+                  }
+                }
+
+                Random random = new Random();                                                           //For the random object declaration
+
+                System.out.print(SubjectSelection.list1.toString());
+
+                //For change
+                Map<String, Integer> m = new HashMap<String, Integer>();
+                for(int i=0; i<SubjectSelection.list1.size(); i++){
+                    String s=SubjectSelection.list1.get(i);
+                        if(s.charAt(1)=='0'){
+                                m.put(s, new Integer(5));
+                        } else if(s.charAt(1)=='2'){
+                                m.put(s, new Integer(1));
+                        } else if(s.charAt(1)=='1' && (s.charAt(0)=='5' || s.charAt(0)=='6')){
+                                m.put(s, new Integer(4));
+                        } else{
+                                m.put(s, new Integer(2));
+                        }
+                }
+
+                // using for-each loop for iteration over Map.entrySet() 
+                for (Map.Entry<String,Integer> entry : m.entrySet()){  
+                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
+                }
+
+                for(int i=0;i<6;i++){
+                    for(int j=0;j<7;j++){
+                        TTUpdated[i][j]="";
+                    }
+                }
+
+                for(int j=0;j<14;j++){
+                    System.out.print(SubjectSelection.list1.get(j)+" ");
+                }System.out.println();
+
+                Collections.shuffle(SubjectSelection.list1); 
+
+                for(int j=0;j<14;j++){
+                    System.out.print(SubjectSelection.list1.get(j)+" ");
+                }System.out.println();
+
+                generator(6, 7, 0, 0, SubjectSelection.list1, m);
+
+                for(int i=0; i<6; i++){
+                    for(int j=0; j<7; j++){
+                        TT[i][j]=Integer.parseInt(TTUpdated[i][j]);
+                        System.out.print(TT[i][j]+" ");
+                    }
+                    System.out.println();
+                }
+                //For change
+                
+                
+                //For checking
+                System.out.println("Teachers ID");
+                for(int i=0; i<7; i++){
+                    System.out.print(teacherList[i]+" ");
+                }
+                System.out.println();
+                System.out.println("TIME TABLE");
+                for(int i=0; i<6; i++){
+                    for(int j=0; j<7; j++){
+                        System.out.print(TT[i][j]+" ");
+                    }
+                    System.out.println("");
+                }
+                //for checking
+
+                Timetable s1=new Timetable();
+                s1.setVisible(true);
             }
-            query="select teacher_id from faculties where first_name='" + teacher2 + "'";
-            rs = statements.executeQuery(query);
-            while(rs.next()){
-                int id=rs.getInt("teacher_id");
-                teacherList[1]=id;
-            }
-            query="select teacher_id from faculties where first_name='" + teacher3 + "'";
-            rs = statements.executeQuery(query);
-            while(rs.next()){
-                int id=rs.getInt("teacher_id");
-                teacherList[2]=id;
-            }
-            query="select teacher_id from faculties where first_name='" + teacher4 + "'";
-            rs = statements.executeQuery(query);
-            while(rs.next()){
-                int id=rs.getInt("teacher_id");
-                teacherList[3]=id;
-            }
-            query="select teacher_id from faculties where first_name='" + teacher5 + "'";
-            rs = statements.executeQuery(query);
-            while(rs.next()){
-                int id=rs.getInt("teacher_id");
-                teacherList[4]=id;
-            }
-            query="select teacher_id from faculties where first_name='" + teacher6 + "'";
-            rs = statements.executeQuery(query);
-            while(rs.next()){
-                int id=rs.getInt("teacher_id");
-                teacherList[5]=id;
-            }
-            query="select teacher_id from faculties where first_name='" + teacher7 + "'";
-            rs = statements.executeQuery(query);
-            while(rs.next()){
-                int id=rs.getInt("teacher_id");
-                teacherList[6]=id;
-            }
-//            for(int i=0; i<7; i++){
-//                System.out.println(teacherName.get(i));
-//            }
         } catch (SQLException ex) {
-            Logger.getLogger(TeacherSelection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SavedTimeTable.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        int[][] periods = new int[7][3];                                                    //Stores the count of each lecture
         
-        //For getting the correct position for Mentor/Library lecture
-        for(int i=0; i<5; i++){
-            if(SubjectSelection.subject[i][2]==0){
-                change=i;
-                SubjectSelection.subject[i][2]=1;
-                SubjectSelection.list1.add(Integer.toString(i)+"2");
-                break;
-            }
-        }
-        
-        //For getting the count of each lecture according to its type and stores it in periods array
-        for(int i=0; i<7; i++)
-        {
-          if(SubjectSelection.subject[i][0]==1)
-          {
-              periods[i][0]=5;
-          }
-          if(SubjectSelection.subject[i][1]==1)
-          {
-              if(SubjectSelection.subject[i][0]==1)
-              {
-                  periods[i][1]=2;
-              }
-              else
-              {
-                  periods[i][1]=4;
-              }
-          }
-          if(SubjectSelection.subject[i][2]==1)
-          {
-              periods[i][2]=1;
-          }
-        }
-
-        Random random = new Random();                                                           //For the random object declaration
-        
-        System.out.print(SubjectSelection.list1.toString());
-
         ////For the to-do task
         
         ////provide the dropdown list for the selection of teacher        DONE
@@ -420,9 +508,9 @@ public class TeacherSelection extends javax.swing.JFrame {
         ////and if it is not present then the message will appear as the time table is not generated yet for the given input.
         
         ////add the teacher name in the time table with the help of teacherName array
-        //create tables for all the teachers with their ID number
-        //change the column name of the existing table as 1s 2s 3s etc.
-        //add one column to all the table with name row with auto increment feature
+        ////create tables for all the teachers with their ID number
+        ////change the column name of the existing table as 1s 2s 3s etc.
+        ////add one column to all the table with name row with auto increment feature
         ////when the save button is clicked the generated time table get stored in the database
         ////After generating the timetable we will create the two dimensional array which will contain the information of the time table
         ////to get stored in the database in the exact form
@@ -433,52 +521,11 @@ public class TeacherSelection extends javax.swing.JFrame {
         ////when the save button is clicked in TimeTable frame all the selected teachers will be putted in the set and the count for the classes in the database get decreased by 1
         ////when the save button is clicked update the chart of teacher with 1, for let say ID 2 for [0][2] with the value 1 that means this slot for this teacher is now engazed
         
-        //For change
-        Map<String, Integer> m = new HashMap<String, Integer>();
-        for(int i=0; i<SubjectSelection.list1.size(); i++){
-            String s=SubjectSelection.list1.get(i);
-		if(s.charAt(1)=='0'){
-			m.put(s, new Integer(5));
-		} else if(s.charAt(1)=='2'){
-			m.put(s, new Integer(1));
-		} else if(s.charAt(1)=='1' && (s.charAt(0)=='5' || s.charAt(0)=='6')){
-			m.put(s, new Integer(4));
-		} else{
-			m.put(s, new Integer(2));
-		}
-        }
+        //Direct to SubjectSelection from TimeTable frame
+        //Create a textarea in Timetable and SavedTimeTableDisplayer to display the full form of the subjects
+        //check for tutorial condition
         
-        // using for-each loop for iteration over Map.entrySet() 
-        for (Map.Entry<String,Integer> entry : m.entrySet()){  
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
-        }
         
-        for(int i=0;i<6;i++){
-            for(int j=0;j<7;j++){
-		TTUpdated[i][j]="";
-            }
-	}
-        
-        for(int j=0;j<14;j++){
-            System.out.print(SubjectSelection.list1.get(j)+" ");
-	}System.out.println();
-        
-        Collections.shuffle(SubjectSelection.list1); 
-        
-        for(int j=0;j<14;j++){
-            System.out.print(SubjectSelection.list1.get(j)+" ");
-	}System.out.println();
-        
-        generator(6, 7, 0, 0, SubjectSelection.list1, m);
-        
-        for(int i=0; i<6; i++){
-            for(int j=0; j<7; j++){
-                TT[i][j]=Integer.parseInt(TTUpdated[i][j]);
-                System.out.print(TT[i][j]+" ");
-            }
-            System.out.println();
-        }
-        //For change
         
         //Actual algorithm for the time table generation
 //        for(int i=0; i<6; i++)
@@ -596,24 +643,7 @@ public class TeacherSelection extends javax.swing.JFrame {
 //              System.out.println("");
 //              System.out.println("");
 //        }
-        
-        //For checking
-        System.out.println("Teachers ID");
-        for(int i=0; i<7; i++){
-            System.out.print(teacherList[i]+" ");
-        }
-        System.out.println();
-        System.out.println("TIME TABLE");
-        for(int i=0; i<6; i++){
-            for(int j=0; j<7; j++){
-                System.out.print(TT[i][j]+" ");
-            }
-            System.out.println("");
-        }
-        //for checking
-  
-        Timetable s1=new Timetable();
-        s1.setVisible(true);
+       
   
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -808,7 +838,7 @@ public class TeacherSelection extends javax.swing.JFrame {
 	}
 	if(col==5){
 		int temp=0;
-		if(s.charAt(1)!=1){
+		if(s.charAt(1)!='1'){
 			for(int j=col-1; j>=0; j--){
 				String sTemp=TTUpdated[row][j];
 				if(sTemp.charAt(1)=='1'){
